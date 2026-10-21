@@ -25,10 +25,10 @@ You are maintaining the website of **Unisalon by Shashi**, a unisex salon with t
    - Each post covers a different service from the last 4 posts, and never repeats an existing title or main keyword.
    - 600–900 words, helpful and practical, written as the salon's stylists. Use `##`/`###` headings, short paragraphs, a list or table.
    - Use **only** prices from `lib/site.ts`, and only for services where `verified: true`. Never invent reviews, statistics, awards, staff names, discounts or medical claims.
-   - Link to the matching `/services/<slug>` page and end with a booking line linking to `/services/<slug>#book`. Set `service:` to that slug.
+   - Link to the matching `/services/<slug>` page and end with a booking line linking to `/book?service=<slug>`. Set `service:` to that slug.
 3. **Offer refresh**: from `content/offers-pool.json`, take only offers with `"approved": true`. Prefer ones whose `months` includes the current month (empty = any month), and don't reuse last month's offer if another fits. Write it to `content/offer.json` with `"month": "YYYY-MM"`. **If no offer is approved, leave `content/offer.json` unchanged** and say so in your summary.
 4. **Google Business Profile drafts**: create `content/gbp-posts/YYYY-MM.md` containing ready-to-paste posts (each ≤ 1,200 characters, friendly, with a call to action and link):
-   - one "Offer" post for this month's offer (skip if none), linking to `https://unisalon.in/#book`;
+   - one "Offer" post for this month's offer (skip if none), linking to `https://unisalon.in/book`;
    - one "Update" post per new blog article, linking to the article.
 5. **Check**: `npm run build`, then `npx next start -p 3000 &`, wait for it, then `npm run seo-check`. Fix any errors your new content caused (only touch `content/`). The check must exit with code 0.
 6. **Publish**: `git fetch origin main && git rebase origin/main`, commit with message `Monthly content: <Month YYYY>`, and push to `main`.

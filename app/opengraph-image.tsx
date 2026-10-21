@@ -9,13 +9,12 @@ export const contentType = "image/png";
 export default function OgImage() {
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", padding: 80, background: "#0b0b0b", color: "#fff" }}>
-        <div style={{ fontSize: 30, letterSpacing: 8, color: "#c59d5f" }}>{`SINCE ${site.since}`}</div>
-        <div style={{ fontSize: 110, fontWeight: 700, letterSpacing: 4, marginTop: 10 }}>UNISALON</div>
-        <div style={{ fontSize: 30, letterSpacing: 10, color: "#c59d5f" }}>BY SHASHI</div>
-        <div style={{ fontSize: 40, marginTop: 40 }}>Unisex Salon · Alkapur Township, Manikonda</div>
-        <div style={{ fontSize: 28, marginTop: 16, opacity: 0.75 }}>Haircuts · Styling · Hair Spa · Colour · Beauty · Bridal</div>
-        <div style={{ display: "flex", marginTop: 44, background: "#c59d5f", color: "#0b0b0b", padding: "14px 30px", fontSize: 28, fontWeight: 700, alignSelf: "flex-start" }}>
+      <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", padding: 90, background: "#f8f5f0", color: "#1a1a1a", fontFamily: "serif" }}>
+        <div style={{ fontSize: 26, letterSpacing: 8, color: "#b08d57" }}>{`UNISEX SALON · SINCE ${site.since}`}</div>
+        <div style={{ fontSize: 120, fontWeight: 300, marginTop: 16 }}>Unisalon</div>
+        <div style={{ fontSize: 46, fontStyle: "italic", color: "#b08d57" }}>Your vibe. Your style.</div>
+        <div style={{ fontSize: 32, marginTop: 40, color: "#6e6a64" }}>Alkapur Township, Manikonda, Hyderabad</div>
+        <div style={{ display: "flex", marginTop: 40, background: "#1a1a1a", color: "#fff", padding: "16px 32px", fontSize: 24, letterSpacing: 4, alignSelf: "flex-start" }}>
           BOOK ONLINE · OPEN 9 AM – 9 PM
         </div>
       </div>

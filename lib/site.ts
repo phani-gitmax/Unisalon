@@ -77,6 +77,10 @@ export const site = {
   // Optional: link to an online booking system (Fresha, Salonist…). Adds a "Book online" button.
   bookingUrl: "",
 
+  // Photos: free Unsplash images for now (see README credits). Replace files in /public/photos with real salon photos.
+  heroPhoto: "/photos/hero-salon.jpg",
+  gallery: ["/photos/gallery-1.jpg", "/photos/gallery-2.jpg", "/photos/gallery-3.jpg", "/photos/gallery-4.jpg"],
+
   // Nearby areas — used in page text and SEO so the site ranks for local searches.
   areas: ["Manikonda", "Alkapur Township", "Puppalaguda", "Narsingi", "Lanco Hills", "Gachibowli", "Kokapet", "Neknampur"],
 
@@ -135,12 +139,14 @@ export type Service = {
   faqs: { q: string; a: string }[];
   verified: boolean; // true = prices copied from the salon's price list
   from?: string; // overrides the automatic "From ₹…" price
+  photo: string; // in /public/photos — replace with your own salon photos any time
 };
 
 // One page is generated per service at /services/<slug>, which helps each one rank in Google.
 export const services: Service[] = [
   {
     slug: "haircut-in-manikonda",
+    photo: "/photos/service-haircut.jpg",
     name: "Haircuts",
     script: "Trendy",
     short: "Men's, women's and kids' cuts — regular or with a senior stylist.",
@@ -181,6 +187,7 @@ export const services: Service[] = [
   },
   {
     slug: "hair-styling-in-manikonda",
+    photo: "/photos/service-styling.jpg",
     name: "Hair Wash & Styling",
     script: "Glam",
     short: "Blow-dry, tongs curls and ironing for every occasion.",
@@ -204,6 +211,7 @@ export const services: Service[] = [
   },
   {
     slug: "hair-spa-in-manikonda",
+    photo: "/photos/service-spa.jpg",
     name: "Hair Spa & Massage",
     script: "Serene",
     short: "L'Oréal hair spa and relaxing oil massages.",
@@ -235,6 +243,7 @@ export const services: Service[] = [
   },
   {
     slug: "hair-colour-in-manikonda",
+    photo: "/photos/service-colour.jpg",
     name: "Hair Colour",
     script: "Pro",
     short: "Global colour, highlights, ombré and grey coverage.",
@@ -258,6 +267,7 @@ export const services: Service[] = [
   },
   {
     slug: "keratin-treatment-in-manikonda",
+    photo: "/photos/service-keratin.jpg",
     name: "Keratin & Smoothening",
     script: "Silky",
     short: "Keratin, smoothening and botox for frizz-free hair.",
@@ -279,6 +289,7 @@ export const services: Service[] = [
   },
   {
     slug: "facial-in-manikonda",
+    photo: "/photos/service-beauty.jpg",
     name: "Beauty & Skin",
     script: "Perfect",
     short: "Clean-ups, facials, threading and waxing.",
@@ -308,6 +319,7 @@ export const services: Service[] = [
   },
   {
     slug: "bridal-makeup-in-manikonda",
+    photo: "/photos/service-bridal.jpg",
     name: "Bridal & Makeover",
     script: "Bridal",
     short: "Bridal, party and groom makeovers with hair styling.",

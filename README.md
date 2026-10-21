@@ -24,7 +24,7 @@ Items marked `TODO` are placeholders. Prices for colour, keratin, beauty and bri
 
 ## Bookings and leads
 
-1. A visitor picks a **branch**, service, date and time.
+1. On `/book`, a visitor picks a service, a **branch**, a day and a time (4 taps), then enters name and phone.
 2. The lead goes to `/api/lead` → `LEAD_WEBHOOK_URL` (the Google Sheet).
 3. WhatsApp opens with the booking filled in, addressed to **that branch's** number.
 4. GA4 events: `generate_lead`, `click_call`, `click_whatsapp`, `click_directions`, `click_membership`, `click_write_review`.
@@ -45,3 +45,7 @@ Items marked `TODO` are placeholders. Prices for colour, keratin, beauty and bri
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console |
 
 Setup steps: [AUTOMATION.md → One-time setup](AUTOMATION.md#one-time-setup-owner).
+
+## Photos
+
+The photos in `public/photos/` are free stock images from [Unsplash](https://unsplash.com) (Unsplash License — free for commercial use, no attribution required). Replace them with real photos of the salon, team and work by saving new files with the same names, or by changing the paths in `lib/site.ts` (`heroPhoto`, `gallery`, and each service's `photo`).

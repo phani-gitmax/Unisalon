@@ -68,7 +68,7 @@ export function branchSchema(b: Branch, reviews: GoogleReviews | null) {
     },
     potentialAction: {
       "@type": "ReserveAction",
-      target: { "@type": "EntryPoint", urlTemplate: `${site.url}/#book` },
+      target: { "@type": "EntryPoint", urlTemplate: `${site.url}/book` },
       result: { "@type": "Reservation", name: "Salon appointment" },
     },
   };

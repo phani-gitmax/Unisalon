@@ -35,29 +35,29 @@ export default async function PostPage({ params }: Props) {
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", url: site.url },
-          { name: "Blog", url: `${site.url}/blog` },
+          { name: "Journal", url: `${site.url}/blog` },
           { name: p.title, url: `${site.url}/blog/${p.slug}` },
         ])}
       />
-      <section className="page-hero dark">
+      <section className="page-head">
         <div className="wrap narrow">
           <nav className="crumbs" aria-label="Breadcrumb">
-            <Link href="/">Home</Link> / <Link href="/blog">Blog</Link>
+            <Link href="/">Home</Link> / <Link href="/blog">Journal</Link>
           </nav>
           <h1>{p.title}</h1>
-          <p className="small-light">
-            {formatDate(p.date)} · {p.readingMinutes} min read · {site.brand}
-          </p>
+          <p className="muted small">{formatDate(p.date)} · {p.readingMinutes} min read · {site.brand}</p>
         </div>
       </section>
       <article className="wrap narrow prose" dangerouslySetInnerHTML={{ __html: p.html }} />
-      <section className="post-cta">
-        <div className="wrap narrow cta-box">
-          <h2>{service ? `Book ${service.name.toLowerCase()} in Manikonda` : "Ready for your next look?"}</h2>
-          <p>Two branches in Alkapur Township · Open every day, 9 AM – 9 PM.</p>
-          <div className="hero-actions">
-            <Link href={service ? `/services/${service.slug}#book` : "/#book"} className="btn btn-gold">Book appointment</Link>
-            {service && <Link href={`/services/${service.slug}`} className="btn btn-outline">See prices</Link>}
+      <section className="section-tight">
+        <div className="wrap narrow">
+          <div className="cta-card">
+            <h2>{service ? `Book ${service.name.toLowerCase()} in Manikonda` : "Ready for your next look?"}</h2>
+            <p className="muted">Two salons in Alkapur Township · Open every day, 9 AM – 9 PM.</p>
+            <div className="hero-actions center-row">
+              <Link href={service ? `/book?service=${service.slug}` : "/book"} className="btn btn-dark">Book an appointment</Link>
+              {service && <Link href={`/services/${service.slug}`} className="link-arrow">See prices →</Link>}
+            </div>
           </div>
         </div>
       </section>

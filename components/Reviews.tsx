@@ -1,51 +1,34 @@
 import { getGoogleReviews, writeReviewUrl } from "@/lib/reviews";
 import { TrackedLink } from "./Analytics";
-import { ScriptHeading } from "./ScriptHeading";
-
-const stars = (n: number) => "★".repeat(Math.round(n)) + "☆".repeat(5 - Math.round(n));
 
 export async function Reviews() {
   const data = await getGoogleReviews();
 
   return (
-    <section id="reviews" className="reviews dark">
+    <section id="reviews" className="reviews">
       <div className="wrap">
-        <div className="section-head">
-          <ScriptHeading script="Loved" title="By Manikonda families" sub="Google reviews" />
-          <div className="rating-badge">
-            <span className="g">G</span>
-            <div>
-              {data.live ? (
-                <>
-                  <strong>{data.rating.toFixed(1)}</strong> <span className="stars">{stars(data.rating)}</span>
-                </>
-              ) : (
-                <span className="stars">★★★★★</span>
-              )}
-              <span className="small-light">{data.count} reviews on Google</span>
-            </div>
+        <div className="head-row">
+          <div>
+            <p className="eyebrow">Google reviews</p>
+            <h2>Kind words from our clients</h2>
           </div>
+          <p className="rating">
+            {data.live ? <strong>{data.rating.toFixed(1)}</strong> : null}
+            <span className="stars" aria-hidden="true">★★★★★</span>
+            <span>{data.count} reviews on Google</span>
+          </p>
         </div>
-
-        <div className="review-grid">
-          {data.reviews.slice(0, 6).map((r, i) => (
+        <div className="review-row">
+          {data.reviews.slice(0, 3).map((r, i) => (
             <figure className="review" key={i}>
-              <div className="stars">{stars(r.rating)}</div>
-              <blockquote>{r.text.length > 260 ? r.text.slice(0, 257) + "…" : r.text}</blockquote>
-              <figcaption>
-                {r.author}
-                {r.when && <span> · {r.when}</span>}
-              </figcaption>
+              <blockquote>&ldquo;{r.text.length > 220 ? r.text.slice(0, 217) + "…" : r.text}&rdquo;</blockquote>
+              <figcaption>— {r.author}</figcaption>
             </figure>
           ))}
         </div>
-
-        <div className="review-actions">
-          <TrackedLink event="click_write_review" className="btn btn-gold" href={writeReviewUrl()} target="_blank" rel="noopener noreferrer">
-            ★ Write a Google review
-          </TrackedLink>
-          <a className="btn btn-outline-light" href="/#book">Book your visit</a>
-        </div>
+        <TrackedLink event="click_write_review" className="link-arrow" href={writeReviewUrl()} target="_blank" rel="noopener noreferrer">
+          Leave us a review on Google →
+        </TrackedLink>
       </div>
     </section>
   );

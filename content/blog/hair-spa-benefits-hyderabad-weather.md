@@ -60,4 +60,4 @@ Want something shorter? An [oil or almond oil head massage](/services/hair-spa-i
 
 ## Book a hair spa in Manikonda
 
-Both Unisalon branches — Aryamitra Trenton Park and Challas Myspace in Alkapur Township — are open every day from 9 AM to 9 PM. [Book your hair spa online](/services/hair-spa-in-manikonda#book) or message us on WhatsApp, and we'll confirm your slot.
+Both Unisalon branches — Aryamitra Trenton Park and Challas Myspace in Alkapur Township — are open every day from 9 AM to 9 PM. [Book your hair spa online](/book?service=hair-spa-in-manikonda) or message us on WhatsApp, and we'll confirm your slot.

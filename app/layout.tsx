@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Montserrat, Mrs_Saint_Delafield } from "next/font/google";
+import { Cormorant_Garamond, Jost } from "next/font/google";
 import { site } from "@/lib/site";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -7,8 +7,8 @@ import { MobileBar } from "@/components/MobileBar";
 import { Analytics } from "@/components/Analytics";
 import "./globals.css";
 
-const body = Montserrat({ subsets: ["latin"], variable: "--font-body" });
-const script = Mrs_Saint_Delafield({ subsets: ["latin"], weight: "400", variable: "--font-script" });
+const display = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400", "500"], variable: "--font-display" });
+const body = Jost({ subsets: ["latin"], weight: ["300", "400", "500"], variable: "--font-body" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -41,11 +41,11 @@ export const metadata: Metadata = {
   verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION },
 };
 
-export const viewport: Viewport = { themeColor: "#0b0b0b" };
+export const viewport: Viewport = { themeColor: "#ffffff" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-IN" className={`${body.variable} ${script.variable}`}>
+    <html lang="en-IN" className={`${display.variable} ${body.variable}`}>
       <body>
         <Header />
         {children}

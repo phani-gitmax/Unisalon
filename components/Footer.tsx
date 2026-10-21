@@ -8,51 +8,42 @@ export function Footer() {
     <footer className="site-footer">
       <div className="wrap foot-grid">
         <div>
-          <Image src="/logo.webp" alt={site.brand} width={166} height={55} />
+          <Image src="/logo-dark.webp" alt={site.brand} width={130} height={43} />
           <p className="foot-about">
-            A family unisex salon in Alkapur Township, Manikonda — personalised hair, skin and beauty services by a
-            team trained since {site.since}.
+            A family unisex salon in Alkapur Township, Manikonda. Open {hoursText[0].days.toLowerCase()}, {hoursText[0].time}.
           </p>
-          <p>
-            {hoursText.map((h) => (
-              <span key={h.days}>
-                {h.days}: {h.time}
-              </span>
-            ))}
-          </p>
+          <Link href="/book" className="btn btn-dark btn-sm">Book an appointment</Link>
         </div>
         {/* Name, address and phone — keep identical to each Google Business Profile */}
         {site.branches.map((b) => (
           <div key={b.id}>
-            <p className="foot-title">{b.name}</p>
+            <p className="foot-title">{b.name.replace(" Branch", "")}</p>
             <address>
               {branchAddress(b)}
               <br />
               <a href={`tel:${b.phone}`}>{b.phoneDisplay}</a>
               <br />
-              <a href={`mailto:${site.email}`}>{site.email}</a>
-              <br />
-              <a href={b.mapsUrl} target="_blank" rel="noopener noreferrer">Directions →</a>
+              <a href={b.mapsUrl} target="_blank" rel="noopener noreferrer">Get directions</a>
             </address>
           </div>
         ))}
         <div>
-          <p className="foot-title">Services</p>
+          <p className="foot-title">Explore</p>
           <ul>
             {services.map((s) => (
               <li key={s.slug}>
                 <Link href={`/services/${s.slug}`}>{s.name}</Link>
               </li>
             ))}
-            <li>
-              <Link href="/blog">Hair &amp; beauty blog</Link>
-            </li>
+            <li><Link href="/prices">Price list</Link></li>
+            <li><Link href="/about">About &amp; membership</Link></li>
+            <li><Link href="/blog">Journal</Link></li>
           </ul>
         </div>
       </div>
       <div className="wrap foot-bottom">
-        <span>© {new Date().getFullYear()} {site.brand}, Manikonda, Hyderabad.</span>
-        <span>Serving {site.areas.join(" · ")}</span>
+        <span>© {new Date().getFullYear()} {site.brand} · <a href={`mailto:${site.email}`}>{site.email}</a></span>
+        <span>Serving {site.areas.join(", ")}</span>
       </div>
     </footer>
   );

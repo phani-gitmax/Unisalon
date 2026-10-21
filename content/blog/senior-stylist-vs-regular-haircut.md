@@ -47,4 +47,4 @@ Every Unisalon stylist is trained to give a clean, accurate cut. Senior stylists
 
 ## Book your haircut in Manikonda
 
-Both branches in Alkapur Township are open every day from 9 AM to 9 PM. [Book a haircut online](/services/haircut-in-manikonda#book) — mention "senior stylist" in the note if you'd like one — and we'll confirm on WhatsApp.
+Both branches in Alkapur Township are open every day from 9 AM to 9 PM. [Book a haircut online](/book?service=haircut-in-manikonda) — mention "senior stylist" in the note if you'd like one — and we'll confirm on WhatsApp.

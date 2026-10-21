@@ -1,27 +1,17 @@
+import Image from "next/image";
 import Link from "next/link";
-import { site, services, allItems, branchAddress } from "@/lib/site";
+import { site, services, branchAddress } from "@/lib/site";
 import { hoursText, fromPrice } from "@/lib/format";
-import { organizationSchema, branchSchema, faqSchema } from "@/lib/schema";
+import { organizationSchema, branchSchema } from "@/lib/schema";
 import { getGoogleReviews } from "@/lib/reviews";
-import { getOffer, getPosts, formatDate } from "@/lib/content";
-import { BookingForm } from "@/components/BookingForm";
+import { getOffer } from "@/lib/content";
 import { Reviews } from "@/components/Reviews";
 import { JsonLd } from "@/components/JsonLd";
 import { TrackedLink } from "@/components/Analytics";
-import { ScriptHeading } from "@/components/ScriptHeading";
-
-// The four signature tiles from the original theme, now linking to real service pages.
-const tiles = [
-  { script: "Trendy", title: "Hairstyle", sub: "Inspirations", href: "/services/haircut-in-manikonda" },
-  { script: "Pro", title: "Colour", sub: "Specialists", href: "/services/hair-colour-in-manikonda" },
-  { script: "Perfect", title: "Beauty", sub: "Experience", href: "/services/facial-in-manikonda" },
-  { script: "Serene", title: "Spa", sub: "Journey", href: "/services/hair-spa-in-manikonda" },
-];
 
 export default async function Home() {
   const reviews = await getGoogleReviews();
   const offer = getOffer();
-  const posts = getPosts().slice(0, 3);
   const years = new Date().getFullYear() - site.since;
 
   return (
@@ -30,257 +20,162 @@ export default async function Home() {
       {site.branches.map((b) => (
         <JsonLd key={b.id} data={branchSchema(b, reviews)} />
       ))}
-      <JsonLd data={faqSchema(site.faqs)} />
 
-      {/* Hero + booking */}
-      <section className="hero dark">
-        <div className="wrap hero-grid">
-          <div className="hero-copy">
-            <p className="kicker">Unisex salon · Alkapur Township, Manikonda</p>
-            <h1>
-              <span className="script hero-script" aria-hidden="true">Your Vibe</span>
-              Your style, <br />done right.
-            </h1>
-            <p className="lead">
-              Haircuts, styling, L&apos;Oréal hair spa, colour, skin and bridal makeovers for men, women and kids.
-              {" "}{years}+ years of experience, two branches, open every day.
-            </p>
-            <ul className="trust">
-              <li><strong>{years}+</strong> years</li>
-              <li><strong>2</strong> branches</li>
-              <li><strong>{reviews.count}+</strong> Google reviews</li>
-              <li><strong>9–9</strong> all days</li>
-            </ul>
-            <div className="hero-actions">
-              <TrackedLink
-                event="click_whatsapp"
-                className="btn btn-whatsapp"
-                href={`https://wa.me/${site.branches[0].whatsapp}?text=${encodeURIComponent(`Hi ${site.name}! I'd like to book an appointment.`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                💬 WhatsApp us
-              </TrackedLink>
-              <Link href="/#prices" className="btn btn-outline-light">View prices</Link>
-            </div>
+      {/* Hero */}
+      <section className="hero">
+        <Image src={site.heroPhoto} alt="Inside a bright, modern Unisalon styling floor" fill priority sizes="100vw" className="hero-img" />
+        <div className="wrap hero-inner">
+          <p className="eyebrow">Unisex salon · Manikonda, Hyderabad</p>
+          <h1>
+            Your vibe.
+            <br />
+            <em>Your style.</em>
+          </h1>
+          <p className="hero-sub">
+            Expert cuts, colour, spa and beauty for men, women and kids — at two salons in Alkapur Township, open every day.
+          </p>
+          <div className="hero-actions">
+            <Link href="/book" className="btn btn-dark">Book an appointment</Link>
+            <Link href="/prices" className="link-arrow">See prices →</Link>
           </div>
-          <div className="booking-card" id="book">
-            <h2>Book an appointment</h2>
-            <p className="small">Pick a branch, service and time — we&apos;ll confirm on WhatsApp.</p>
-            <BookingForm compact />
+          <ul className="hero-facts">
+            <li><span className="stars" aria-hidden="true">★★★★★</span> {reviews.count}+ Google reviews</li>
+            <li>Since {site.since}</li>
+            <li>{hoursText[0].time}, {hoursText[0].days.toLowerCase()}</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* One-tap quick booking */}
+      <section className="quick">
+        <div className="wrap quick-inner">
+          <p>What would you like today?</p>
+          <div className="chips">
+            {services.map((s) => (
+              <Link key={s.slug} href={`/book?service=${s.slug}`} className="chip">
+                {s.name}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="tiles" aria-label="Our specialities">
-        {tiles.map((t, i) => (
-          <Link key={t.title} href={t.href} className={`tile ${i % 2 ? "tile-dark" : ""}`}>
-            <ScriptHeading script={t.script} title={t.title} sub={t.sub} as="h3" align="center" />
-          </Link>
-        ))}
-      </section>
-
       {offer && (
-        <section className="offer" aria-label="This month's offer">
+        <section className="offer">
           <div className="wrap offer-inner">
             <p>
-              <span className="offer-tag">Offer of the month</span>
-              <strong>{offer.title}</strong> <span>{offer.text}</span>
+              <span className="eyebrow">This month</span> {offer.title}. <span className="muted">{offer.text}</span>
             </p>
-            <Link href="/#book" className="btn btn-dark">{offer.cta}</Link>
+            <Link href="/book" className="link-arrow">{offer.cta} →</Link>
           </div>
         </section>
       )}
 
       {/* Services */}
-      <section id="services">
+      <section id="services" className="section">
         <div className="wrap">
-          <div className="section-head">
-            <ScriptHeading script="Make it" title="Our services" sub="Hair · Colour · Beauty · Spa" />
-            <p className="lead">Everything for men, women and kids — under one roof, at two branches in Alkapur Township.</p>
+          <div className="head-row">
+            <div>
+              <p className="eyebrow">Services</p>
+              <h2>Everything you need, in one place</h2>
+            </div>
+            <Link href="/prices" className="link-arrow">Full price list →</Link>
           </div>
-          <div className="service-grid">
+          <div className="svc-grid">
             {services.map((s) => (
-              <Link href={`/services/${s.slug}`} className="service-card" key={s.slug}>
-                <span className="script small-script" aria-hidden="true">{s.script}</span>
+              <Link key={s.slug} href={`/services/${s.slug}`} className="svc">
+                <div className="svc-img">
+                  <Image src={s.photo} alt={s.name} fill sizes="(max-width: 760px) 80vw, 25vw" />
+                </div>
                 <h3>{s.name}</h3>
-                <p>{s.short}</p>
-                <span className="from">From {fromPrice(s)} →</span>
+                <p>From {fromPrice(s)}</p>
               </Link>
             ))}
-            <TrackedLink
-              event="click_whatsapp"
-              className="service-card ask"
-              href={`https://wa.me/${site.branches[0].whatsapp}?text=${encodeURIComponent(`Hi ${site.name}! Can you help me choose a service?`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="script small-script" aria-hidden="true">Unsure?</span>
-              <h3>Ask a stylist</h3>
-              <p>Tell us your hair or skin concern on WhatsApp and we&apos;ll suggest the right service.</p>
-              <span className="from">Chat now →</span>
-            </TrackedLink>
+            <Link href="/book" className="svc svc-cta">
+              <span className="eyebrow">Ready?</span>
+              <h3>Book in under a minute</h3>
+              <p>Pick a service, branch and time — we confirm on WhatsApp.</p>
+              <span className="link-arrow">Book now →</span>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Prices */}
-      <section id="prices" className="prices">
-        <div className="wrap">
-          <div className="section-head">
-            <ScriptHeading script="Honest" title="Price list" sub="No surprises at the counter" />
-            <p className="lead">Prices may vary with hair length and products chosen — your stylist confirms before starting.</p>
+      {/* Story teaser */}
+      <section className="section split">
+        <div className="wrap split-grid">
+          <div className="split-img">
+            <Image src={site.gallery[0]} alt="Styling stations at the salon" fill sizes="(max-width: 900px) 100vw, 50vw" />
           </div>
-          <div className="price-grid">
-            {services.map((s) => (
-              <div className="price-card" key={s.slug}>
-                <h3>
-                  <Link href={`/services/${s.slug}`}>{s.name}</Link>
-                </h3>
-                <ul>
-                  {allItems(s).map((i) => (
-                    <li key={i.name}>
-                      <span>{i.name}</span>
-                      <span className="dots" />
-                      <strong>{i.price}</strong>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Story */}
-      <section className="story dark">
-        <div className="wrap story-grid">
-          <ScriptHeading script={`Since ${site.since}`} title="The Shashi story" sub="From Mumbai to Manikonda" />
-          <ol className="timeline">
-            {site.story.map((s) => (
-              <li key={s.year}>
-                <span className="year">{s.year}</span>
-                <p>{s.text}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* Membership */}
-      <section id="membership">
-        <div className="wrap">
-          <ScriptHeading script="Premium" title="Membership packages" sub="Prepay and save on every visit" align="center" />
-          <div className="member-grid">
-            {site.memberships.map((m, i) => (
-              <div className={`member-card ${i === 1 ? "featured" : ""}`} key={m.name}>
-                <p className="kicker">{m.name}</p>
-                <p className="member-price">{m.price}</p>
-                <p className="small">{m.note}</p>
-                <TrackedLink
-                  event="click_membership"
-                  className={`btn ${i === 1 ? "btn-gold" : "btn-outline"} btn-block`}
-                  href={`https://wa.me/${site.branches[0].whatsapp}?text=${encodeURIComponent(`Hi ${site.name}! Please share details of the ${m.name} membership (${m.price}).`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Ask for details
-                </TrackedLink>
-              </div>
-            ))}
+          <div>
+            <p className="eyebrow">Since {site.since}</p>
+            <h2>{years} years of craft, from Mumbai to Manikonda</h2>
+            <p className="lead">
+              Shashi began styling in Mumbai&apos;s best salons in {site.since}. Today his team brings the same care to
+              families across Manikonda — honest advice, clean spaces and prices you can see upfront.
+            </p>
+            <Link href="/about" className="link-arrow">Our story &amp; memberships →</Link>
           </div>
         </div>
       </section>
 
       <Reviews />
 
-      {/* Team */}
-      <section id="team">
-        <div className="wrap">
-          <ScriptHeading script="Meet" title="The team" sub="Stylists who listen" />
-          <div className="team-grid">
-            {site.team.map((t, i) => (
-              <div className="team-card" key={i}>
-                <div className="team-photo" aria-hidden="true">{t.name.charAt(0)}</div>
-                <h3>{t.name}</h3>
-                <p>{t.role}</p>
-                {t.years && <span className="small">{t.years}</span>}
-              </div>
-            ))}
+      {/* Gallery */}
+      <section className="gallery" aria-label="Gallery">
+        {site.gallery.slice(1).map((g, i) => (
+          <div className="g-item" key={g}>
+            <Image src={g} alt={`Unisalon gallery photo ${i + 1}`} fill sizes="(max-width: 760px) 100vw, 33vw" />
           </div>
-        </div>
+        ))}
       </section>
 
-      {/* Blog */}
-      {posts.length > 0 && (
-        <section className="blog-teaser">
-          <div className="wrap">
-            <div className="section-head">
-              <ScriptHeading script="Tips" title="Hair & beauty journal" sub="From our stylists" />
-              <Link href="/blog" className="btn btn-outline">All articles</Link>
-            </div>
-            <div className="post-grid">
-              {posts.map((p) => (
-                <Link href={`/blog/${p.slug}`} className="post-card" key={p.slug}>
-                  <span className="small">{formatDate(p.date)} · {p.readingMinutes} min read</span>
-                  <h3>{p.title}</h3>
-                  <p>{p.description}</p>
-                  <span className="from">Read more →</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* FAQ */}
-      <section className="faq">
-        <div className="wrap narrow">
-          <ScriptHeading script="Good" title="To know" sub="FAQs" align="center" />
-          {site.faqs.map((f) => (
-            <details key={f.q}>
-              <summary>{f.q}</summary>
-              <p>{f.a}</p>
-            </details>
-          ))}
-        </div>
-      </section>
-
-      {/* Branches */}
-      <section id="branches" className="branches">
+      {/* Visit */}
+      <section id="visit" className="section">
         <div className="wrap">
-          <ScriptHeading script="Visit" title="Our branches" sub={`Alkapur Township, Manikonda · ${hoursText[0].days}, ${hoursText[0].time}`} align="center" />
+          <div className="head-row">
+            <div>
+              <p className="eyebrow">Visit us</p>
+              <h2>Two salons in Alkapur Township</h2>
+            </div>
+            <p className="muted">{hoursText[0].days}, {hoursText[0].time}</p>
+          </div>
           <div className="branch-grid">
             {site.branches.map((b) => (
               <article className="branch" key={b.id}>
-                <iframe
-                  className="map"
-                  title={`Map of ${site.name} ${b.name}`}
-                  src={`https://maps.google.com/maps?q=${b.lat},${b.lng}&z=16&output=embed`}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-                <div className="branch-body">
-                  <h3>{b.name}</h3>
-                  <p>{branchAddress(b)}</p>
-                  <p>
-                    <a href={`tel:${b.phone}`}>{b.phoneDisplay}</a> · <a href={`mailto:${site.email}`}>{site.email}</a>
-                  </p>
-                  <div className="hero-actions">
-                    <TrackedLink event="click_directions" className="btn btn-dark" href={b.mapsUrl} target="_blank" rel="noopener noreferrer">
-                      📍 Directions
-                    </TrackedLink>
-                    <TrackedLink event="click_call" className="btn btn-outline" href={`tel:${b.phone}`}>
-                      📞 Call
-                    </TrackedLink>
-                  </div>
+                <h3>{b.name.replace(" Branch", "")}</h3>
+                <p className="muted">{branchAddress(b)}</p>
+                <p>
+                  <a href={`tel:${b.phone}`}>{b.phoneDisplay}</a>
+                </p>
+                <div className="branch-actions">
+                  <Link href="/book" className="btn btn-dark btn-sm">Book here</Link>
+                  <TrackedLink event="click_directions" className="link-arrow" href={b.mapsUrl} target="_blank" rel="noopener noreferrer">
+                    Directions →
+                  </TrackedLink>
                 </div>
               </article>
             ))}
           </div>
-          <p className="center small areas">
-            Clients visit us from {site.areas.slice(2).join(", ")} and across west Hyderabad.
-          </p>
+        </div>
+      </section>
+
+      <section className="final-cta">
+        <div className="wrap center">
+          <h2>Ready for your next look?</h2>
+          <p className="muted">Book online in under a minute, or message us on WhatsApp.</p>
+          <div className="hero-actions center-row">
+            <Link href="/book" className="btn btn-dark">Book an appointment</Link>
+            <TrackedLink
+              event="click_whatsapp"
+              className="btn btn-line"
+              href={`https://wa.me/${site.branches[0].whatsapp}?text=${encodeURIComponent(`Hi ${site.name}! I'd like to book an appointment.`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WhatsApp us
+            </TrackedLink>
+          </div>
         </div>
       </section>
     </main>

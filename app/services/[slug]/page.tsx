@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { site, services, getService } from "@/lib/site";
 import { fromPrice } from "@/lib/format";
 import { serviceSchema, faqSchema, breadcrumbSchema } from "@/lib/schema";
 import { getPosts } from "@/lib/content";
-import { BookingForm } from "@/components/BookingForm";
 import { JsonLd } from "@/components/JsonLd";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: s.seoTitle,
     description,
     alternates: { canonical: `/services/${s.slug}` },
-    openGraph: { title: `${s.seoTitle} | ${site.name}`, description, url: `${site.url}/services/${s.slug}` },
+    openGraph: { title: `${s.seoTitle} | ${site.name}`, description, url: `${site.url}/services/${s.slug}`, images: [s.photo] },
   };
 }
 
@@ -30,11 +30,11 @@ export default async function ServicePage({ params }: Props) {
   const s = getService((await params).slug);
   if (!s) notFound();
 
-  const others = services.filter((o) => o.slug !== s.slug);
+  const others = services.filter((o) => o.slug !== s.slug).slice(0, 4);
   const related = getPosts().filter((p) => p.service === s.slug).slice(0, 3);
   const faqs = [
     ...s.faqs,
-    { q: `How much does ${s.name.toLowerCase()} cost in Manikonda?`, a: `At ${site.name}, ${s.name.toLowerCase()} starts from ${fromPrice(s)}. See the full price list on this page.` },
+    { q: `How much does ${s.name.toLowerCase()} cost in Manikonda?`, a: `At ${site.name}, ${s.name.toLowerCase()} starts from ${fromPrice(s)}. See the full list of prices on this page.` },
     { q: `Where can I get ${s.name.toLowerCase()} near Alkapur Township?`, a: `${site.brand} has two branches in Alkapur Township, Manikonda: ${site.branches.map((b) => b.name).join(" and ")}. Both are open every day, 9 AM to 9 PM.` },
   ];
 
@@ -50,76 +50,80 @@ export default async function ServicePage({ params }: Props) {
         ])}
       />
 
-      <section className="page-hero dark">
-        <div className="wrap">
-          <nav className="crumbs" aria-label="Breadcrumb">
-            <Link href="/">Home</Link> / <Link href="/#services">Services</Link> / <span>{s.name}</span>
-          </nav>
-          <span className="script hero-script" aria-hidden="true">{s.script}</span>
-          <h1>{s.seoTitle}</h1>
-          <p className="lead">{s.intro}</p>
+      <section className="svc-hero">
+        <div className="wrap svc-hero-grid">
+          <div>
+            <nav className="crumbs" aria-label="Breadcrumb">
+              <Link href="/">Home</Link> / <Link href="/#services">Services</Link> / <span>{s.name}</span>
+            </nav>
+            <p className="eyebrow">{s.for === "Unisex" ? "For men & women" : `For ${s.for.toLowerCase()}`} · From {fromPrice(s)}</p>
+            <h1>{s.seoTitle}</h1>
+            <p className="lead">{s.intro}</p>
+            <div className="hero-actions">
+              <Link href={`/book?service=${s.slug}`} className="btn btn-dark">Book {s.name.toLowerCase()}</Link>
+              <a href="#prices" className="link-arrow">See prices ↓</a>
+            </div>
+          </div>
+          <div className="svc-hero-img">
+            <Image src={s.photo} alt={s.name} fill priority sizes="(max-width: 900px) 100vw, 45vw" />
+          </div>
         </div>
       </section>
 
-      <section>
-        <div className="wrap hero-grid">
-          <div>
-            {s.groups.map((g) => (
-              <div className="price-card wide" key={g.title}>
-                <h2>{g.title}</h2>
-                <ul>
-                  {g.items.map((i) => (
-                    <li key={i.name}>
-                      <span>{i.name}</span>
-                      <span className="dots" />
-                      <strong>{i.price}</strong>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-            <p className="small">Available at both branches in Alkapur Township · Serving {site.areas.join(", ")}.</p>
+      <section id="prices" className="section-tight">
+        <div className="wrap narrow">
+          {s.groups.map((g) => (
+            <div className="price-block" key={g.title}>
+              <h2 className="price-group-h">{g.title}</h2>
+              <ul className="price-list">
+                {g.items.map((i) => (
+                  <li key={i.name}>
+                    <span>{i.name}</span>
+                    <span className="dots" />
+                    <span className="price">{i.price}</span>
+                    <Link href={`/book?service=${encodeURIComponent(i.name)}`} className="price-book" aria-label={`Book ${i.name}`}>Book</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <p className="muted small">Available at both branches in Alkapur Township · Serving {site.areas.join(", ")}.</p>
 
-            <div className="faq inline">
-              <h2>{s.name} — FAQs</h2>
-              {faqs.map((f) => (
-                <details key={f.q}>
-                  <summary>{f.q}</summary>
-                  <p>{f.a}</p>
-                </details>
+          <div className="faq">
+            <h2>Questions</h2>
+            {faqs.map((f) => (
+              <details key={f.q}>
+                <summary>{f.q}</summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+          </div>
+
+          {related.length > 0 && (
+            <div className="related">
+              <p className="eyebrow">From the journal</p>
+              {related.map((p) => (
+                <Link key={p.slug} href={`/blog/${p.slug}`} className="link-arrow block">{p.title} →</Link>
               ))}
             </div>
-
-            {related.length > 0 && (
-              <div className="related">
-                <h2>Read more</h2>
-                <ul>
-                  {related.map((p) => (
-                    <li key={p.slug}>
-                      <Link href={`/blog/${p.slug}`}>{p.title}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-          <div className="booking-card sticky" id="book">
-            <h2>Book {s.name.toLowerCase()}</h2>
-            <p className="small">Choose a branch and time — we&apos;ll confirm on WhatsApp.</p>
-            <BookingForm defaultService={s.groups[0].items[0].name} />
-          </div>
+          )}
         </div>
       </section>
 
-      <section className="prices">
+      <section className="section ivory">
         <div className="wrap">
-          <h2>More at {site.name}</h2>
-          <div className="service-grid">
+          <div className="head-row">
+            <h2>You might also like</h2>
+            <Link href="/prices" className="link-arrow">All prices →</Link>
+          </div>
+          <div className="svc-grid four">
             {others.map((o) => (
-              <Link href={`/services/${o.slug}`} className="service-card" key={o.slug}>
-                <span className="script small-script" aria-hidden="true">{o.script}</span>
+              <Link key={o.slug} href={`/services/${o.slug}`} className="svc">
+                <div className="svc-img">
+                  <Image src={o.photo} alt={o.name} fill sizes="(max-width: 760px) 80vw, 25vw" />
+                </div>
                 <h3>{o.name}</h3>
-                <span className="from">From {fromPrice(o)} →</span>
+                <p>From {fromPrice(o)}</p>
               </Link>
             ))}
           </div>
