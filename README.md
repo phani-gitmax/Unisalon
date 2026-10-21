@@ -1,70 +1,47 @@
-# Unisalon — www.unisalon.in
+# Unisalon by Shashi — unisalon.in
 
-Website for Unisalon, a unisex salon in Manikonda, Hyderabad. Built with Next.js and designed around three goals: **appointment bookings**, **monthly leads** and **local SEO**.
+Website for Unisalon, a unisex salon with two branches in Alkapur Township, Manikonda, Hyderabad. Built with Next.js around three goals: **appointment bookings**, **monthly leads** and **local SEO** — with monthly content and reporting automated (see [AUTOMATION.md](AUTOMATION.md)).
 
 ```bash
 npm install
-npm run dev     # http://localhost:3000
-npm run build   # production build
+npm run dev          # http://localhost:3000
+npm run build        # production build
+npm run seo-check    # SEO health check (run against a running server)
 ```
 
-## Editing content
+## Where things live
 
-Everything lives in **`lib/site.ts`**: phone, WhatsApp, address, hours, offer banner, services and prices, team, FAQs and nearby areas. Edit it and push; Vercel redeploys automatically. Items marked `TODO` are placeholders.
-
-- **Prices / services:** edit `services`. Each service gets its own SEO page at `/services/<slug>`.
-- **Monthly offer:** edit `offer`, or set it to `null` to hide the banner.
-- **Colours:** change the tokens at the top of `app/globals.css`.
-
-## How bookings and leads work
-
-1. A visitor fills in the booking form (home page or any service page).
-2. The lead is sent to `/api/lead` and forwarded to `LEAD_WEBHOOK_URL` (your Google Sheet).
-3. WhatsApp opens with the booking details filled in, addressed to the salon's number.
-4. A `generate_lead` event is sent to Google Analytics.
-
-Call, WhatsApp, directions and review clicks are tracked too (`click_call`, `click_whatsapp`, `click_directions`, `click_write_review`).
-
-### Save every lead to a Google Sheet (free)
-
-1. Create a Google Sheet with headers in row 1: `receivedAt, name, phone, service, date, time, message, page, source`.
-2. **Extensions → Apps Script**, paste this and save:
-   ```js
-   function doPost(e) {
-     const lead = JSON.parse(e.postData.contents);
-     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
-     const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-     sheet.appendRow(headers.map((h) => lead[h] ?? ""));
-     return ContentService.createTextOutput("ok");
-   }
-   ```
-3. **Deploy → New deployment → Web app**, "Execute as: Me", "Who has access: Anyone". Copy the URL.
-4. In Vercel → Project → Settings → Environment Variables, add `LEAD_WEBHOOK_URL` = that URL and redeploy.
-
-Filter the sheet by month for your monthly lead report.
-
-## Environment variables (Vercel → Settings → Environment Variables)
-
-| Variable | Purpose |
+| What | File |
 |---|---|
-| `LEAD_WEBHOOK_URL` | Where booking leads are sent (Google Sheet script, Zapier, CRM) |
-| `GOOGLE_PLACES_API_KEY` | Shows live Google rating and reviews (also set `google.placeId` in `lib/site.ts`) |
-| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 measurement ID, e.g. `G-XXXXXXX` |
-| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification code |
+| Branches, phones, hours, services & prices, team, FAQs, memberships | `lib/site.ts` |
+| This month's offer (written by automation) | `content/offer.json` |
+| Offers the automation is allowed to use | `content/offers-pool.json` |
+| Blog posts (Markdown) | `content/blog/*.md` |
+| Google Business Profile post drafts | `content/gbp-posts/` |
+| Colours and fonts | top of `app/globals.css`, `app/layout.tsx` |
 
-## Google Business Profile checklist
+Items marked `TODO` are placeholders. Prices for colour, keratin, beauty and bridal (`verified: false`) are samples until replaced.
 
-- Put **www.unisalon.in** as the website and **www.unisalon.in/#book** as the appointment link.
-- Keep the name, address and phone **exactly** the same as in `lib/site.ts`.
-- Add every service with its price, matching the site's price list.
-- Post the monthly offer on the profile (Updates → Offer) when you change it on the site.
-- Ask happy clients to use the site's "Write a Google review" button; reviews show on the site once the Places API key is set.
+## Bookings and leads
+
+1. A visitor picks a **branch**, service, date and time.
+2. The lead goes to `/api/lead` → `LEAD_WEBHOOK_URL` (the Google Sheet).
+3. WhatsApp opens with the booking filled in, addressed to **that branch's** number.
+4. GA4 events: `generate_lead`, `click_call`, `click_whatsapp`, `click_directions`, `click_membership`, `click_write_review`.
 
 ## SEO built in
 
-- A page for each service targeting "<service> in Manikonda" searches.
-- `HairSalon` / `BeautySalon` structured data with address, map, hours, services, Google rating and booking action.
-- FAQ and breadcrumb structured data; `sitemap.xml` and `robots.txt`.
-- Social share image (`/opengraph-image`).
+- A page per service ("<service> in Manikonda") and a blog, all in `sitemap.xml`.
+- Structured data: Organization + a `HairSalon` for **each branch** (address, map, hours, services, rating, booking action), plus Service, FAQ, Article and Breadcrumb data.
+- `scripts/seo-check.mjs` checks titles, descriptions, headings, canonicals, structured data, alt text and broken links.
 
-After launch, add the site to **Google Search Console** and submit `https://www.unisalon.in/sitemap.xml`.
+## Environment variables
+
+| Variable | Purpose |
+|---|---|
+| `LEAD_WEBHOOK_URL` | Google Sheet web app URL that stores leads |
+| `GOOGLE_PLACES_API_KEY` | Live Google rating and reviews |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 |
+| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console |
+
+Setup steps: [AUTOMATION.md → One-time setup](AUTOMATION.md#one-time-setup-owner).

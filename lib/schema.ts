@@ -1,66 +1,74 @@
-// schema.org structured data. Google reads this to show the salon in Maps,
-// local results and rich snippets (hours, rating, prices, FAQs).
+// schema.org structured data. Google reads this to show each branch in Maps,
+// local results and rich snippets (hours, rating, prices, FAQs, articles).
 
-import { site, services, type Service } from "./site";
+import { site, services, allItems, type Service, type Branch } from "./site";
 import type { GoogleReviews } from "./reviews";
+import type { Post } from "./content";
 
-const dayMap: Record<string, string> = {
-  Monday: "https://schema.org/Monday",
-  Tuesday: "https://schema.org/Tuesday",
-  Wednesday: "https://schema.org/Wednesday",
-  Thursday: "https://schema.org/Thursday",
-  Friday: "https://schema.org/Friday",
-  Saturday: "https://schema.org/Saturday",
-  Sunday: "https://schema.org/Sunday",
-};
+const days: Record<string, string> = Object.fromEntries(
+  ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((d) => [d, `https://schema.org/${d}`]),
+);
 
-export function businessSchema(reviews: GoogleReviews | null) {
-  const { address: a } = site;
+const orgId = `${site.url}/#organization`;
+
+export function organizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": orgId,
+    name: site.brand,
+    alternateName: [site.name, site.googleName],
+    url: site.url,
+    logo: `${site.url}/logo.webp`,
+    email: site.email,
+    foundingDate: String(site.since),
+    sameAs: [site.social.instagram, site.social.facebook].filter(Boolean),
+    subOrganization: site.branches.map((b) => ({ "@id": `${site.url}/#${b.id}` })),
+  };
+}
+
+export function branchSchema(b: Branch, reviews: GoogleReviews | null) {
   return {
     "@context": "https://schema.org",
     "@type": ["HairSalon", "BeautySalon"],
-    "@id": `${site.url}/#business`,
-    name: site.name,
-    legalName: site.legalName,
+    "@id": `${site.url}/#${b.id}`,
+    name: `${site.brand} – ${b.name}`,
     description: site.description,
     url: site.url,
-    telephone: site.contact.phone,
-    email: site.contact.email,
+    telephone: b.phone,
+    email: site.email,
     image: `${site.url}/opengraph-image`,
+    logo: `${site.url}/logo.webp`,
     priceRange: "₹₹",
+    parentOrganization: { "@id": orgId },
     address: {
       "@type": "PostalAddress",
-      streetAddress: a.street,
-      addressLocality: a.city,
-      addressRegion: a.region,
-      postalCode: a.postalCode,
-      addressCountry: a.country,
+      streetAddress: b.street,
+      addressLocality: b.locality,
+      addressRegion: b.region,
+      postalCode: b.postalCode,
+      addressCountry: "IN",
     },
-    geo: { "@type": "GeoCoordinates", latitude: a.lat, longitude: a.lng },
-    hasMap: site.google.mapsUrl,
+    geo: { "@type": "GeoCoordinates", latitude: b.lat, longitude: b.lng },
+    hasMap: b.mapsUrl,
     areaServed: site.areas.map((name) => ({ "@type": "Place", name: `${name}, Hyderabad` })),
     openingHoursSpecification: site.hours.map((h) => ({
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: h.days.map((d) => dayMap[d]),
+      dayOfWeek: h.days.map((d) => days[d]),
       opens: h.open,
       closes: h.close,
     })),
-    sameAs: [site.social.instagram, site.social.facebook, site.google.mapsUrl].filter(Boolean),
-    ...(reviews && reviews.count > 0
+    ...(reviews?.live && reviews.count > 0
       ? { aggregateRating: { "@type": "AggregateRating", ratingValue: reviews.rating, reviewCount: reviews.count } }
       : {}),
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Salon services",
-      itemListElement: services.map((s) => ({
-        "@type": "OfferCatalog",
-        name: s.name,
-        url: `${site.url}/services/${s.slug}`,
-      })),
+      itemListElement: services.map((s) => ({ "@type": "OfferCatalog", name: s.name, url: `${site.url}/services/${s.slug}` })),
     },
     potentialAction: {
       "@type": "ReserveAction",
-      target: { "@type": "EntryPoint", urlTemplate: `${site.url}/#book`, actionPlatform: ["https://schema.org/DesktopWebPlatform", "https://schema.org/MobileWebPlatform"] },
+      target: { "@type": "EntryPoint", urlTemplate: `${site.url}/#book` },
       result: { "@type": "Reservation", name: "Salon appointment" },
     },
   };
@@ -74,14 +82,31 @@ export function serviceSchema(s: Service) {
     serviceType: s.name,
     description: s.intro,
     url: `${site.url}/services/${s.slug}`,
-    provider: { "@id": `${site.url}/#business` },
+    provider: site.branches.map((b) => ({ "@id": `${site.url}/#${b.id}` })),
     areaServed: site.areas.map((name) => `${name}, Hyderabad`),
-    offers: s.items.map((i) => ({
+    offers: allItems(s).map((i) => ({
       "@type": "Offer",
       name: i.name,
-      price: i.price.replace(/[^\d.]/g, ""),
+      price: i.price.replace(/[^\d]/g, ""),
       priceCurrency: "INR",
     })),
+  };
+}
+
+export function articleSchema(p: Post) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: p.title,
+    description: p.description,
+    datePublished: p.date,
+    dateModified: p.date,
+    keywords: p.keywords.join(", "),
+    url: `${site.url}/blog/${p.slug}`,
+    mainEntityOfPage: `${site.url}/blog/${p.slug}`,
+    image: `${site.url}/opengraph-image`,
+    author: { "@type": "Organization", name: site.brand, url: site.url },
+    publisher: { "@id": orgId },
   };
 }
 

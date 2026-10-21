@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/site";
 import { track } from "./Analytics";
@@ -8,9 +9,9 @@ import { track } from "./Analytics";
 const links = [
   { href: "/#services", label: "Services" },
   { href: "/#prices", label: "Prices" },
-  { href: "/#reviews", label: "Reviews" },
-  { href: "/#team", label: "Team" },
-  { href: "/#visit", label: "Visit us" },
+  { href: "/#membership", label: "Membership" },
+  { href: "/blog", label: "Blog" },
+  { href: "/#branches", label: "Branches" },
 ];
 
 export function Header() {
@@ -18,12 +19,21 @@ export function Header() {
 
   return (
     <header className="site-header">
-      <div className="wrap nav">
-        <Link href="/" className="logo" aria-label={`${site.name} home`}>
-          <span className="logo-mark">U</span>
-          <span>
-            uni<b>salon</b>
+      <div className="topbar">
+        <div className="wrap topbar-inner">
+          <span>Open all days · 9 AM – 9 PM</span>
+          <span className="topbar-phones">
+            {site.branches.map((b) => (
+              <a key={b.id} href={`tel:${b.phone}`} onClick={() => track("click_call", { branch: b.id })}>
+                {b.name.replace("Aryamitra ", "").replace(" Branch", "")}: {b.phoneDisplay}
+              </a>
+            ))}
           </span>
+        </div>
+      </div>
+      <div className="wrap nav">
+        <Link href="/" className="logo" aria-label={`${site.brand} home`}>
+          <Image src="/logo.webp" alt={site.brand} width={166} height={55} priority />
         </Link>
         <button
           className="menu-toggle"
@@ -42,12 +52,9 @@ export function Header() {
             </li>
           ))}
         </ul>
-        <div className="nav-actions">
-          <a href={`tel:${site.contact.phone}`} className="nav-phone" onClick={() => track("click_call")}>
-            {site.contact.phoneDisplay}
-          </a>
-          <Link href="/#book" className="btn btn-primary">Book now</Link>
-        </div>
+        <Link href="/#book" className="btn btn-gold nav-cta">
+          Book appointment
+        </Link>
       </div>
     </header>
   );

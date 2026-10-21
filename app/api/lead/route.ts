@@ -8,6 +8,7 @@ type Lead = {
   name?: string;
   phone?: string;
   service?: string;
+  branch?: string;
   date?: string;
   time?: string;
   message?: string;
@@ -38,6 +39,7 @@ export async function POST(req: Request) {
     receivedAt: new Date().toISOString(),
     name,
     phone,
+    branch: clean(body.branch, 100),
     service: clean(body.service, 100),
     date: clean(body.date, 20),
     time: clean(body.time, 20),

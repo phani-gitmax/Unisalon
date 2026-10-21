@@ -1,0 +1,37 @@
+{
+  "_readme": "Offers the monthly automation may use. It only picks offers with \"approved\": true, rotating through them and preferring ones whose months include the current month (1-12; empty = any month). Edit freely — set approved to true only for offers the salon agrees to honour.",
+  "offers": [
+    {
+      "id": "spa-massage",
+      "approved": false,
+      "months": [],
+      "title": "Free head massage with any L'Oréal hair spa",
+      "text": "Book a hair spa this month and get a relaxing oil massage on us. Valid at both branches.",
+      "cta": "Claim offer"
+    },
+    {
+      "id": "weekday-senior",
+      "approved": false,
+      "months": [],
+      "title": "Weekday special: senior stylist haircut at the regular price",
+      "text": "Monday to Thursday only. Mention this offer when you book.",
+      "cta": "Book a weekday slot"
+    },
+    {
+      "id": "wedding-season",
+      "approved": false,
+      "months": [10, 11, 12, 1, 2],
+      "title": "Wedding season: free consultation and trial booking for brides and grooms",
+      "text": "Plan your look early — book a free consultation at either branch.",
+      "cta": "Book consultation"
+    },
+    {
+      "id": "summer-spa",
+      "approved": false,
+      "months": [3, 4, 5, 6],
+      "title": "Summer hair rescue: 10% off hair spa for sun-damaged hair",
+      "text": "Beat Hyderabad's heat with a deep-conditioning L'Oréal spa.",
+      "cta": "Claim offer"
+    }
+  ]
+}

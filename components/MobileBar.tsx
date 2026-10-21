@@ -1,17 +1,17 @@
 import Link from "next/link";
-import { site } from "@/lib/site";
+import { site, mainBranch } from "@/lib/site";
 import { TrackedLink } from "./Analytics";
 
 // Sticky Call / WhatsApp / Book bar on phones — the main way local customers get in touch.
 export function MobileBar() {
   return (
     <nav className="mobile-bar" aria-label="Quick contact">
-      <TrackedLink event="click_call" href={`tel:${site.contact.phone}`}>
+      <TrackedLink event="click_call" href={`tel:${mainBranch.phone}`}>
         <span aria-hidden="true">📞</span>Call
       </TrackedLink>
       <TrackedLink
         event="click_whatsapp"
-        href={`https://wa.me/${site.contact.whatsapp}?text=${encodeURIComponent(`Hi ${site.name}! I'd like to book an appointment.`)}`}
+        href={`https://wa.me/${mainBranch.whatsapp}?text=${encodeURIComponent(`Hi ${site.name}! I'd like to book an appointment.`)}`}
         target="_blank"
         rel="noopener noreferrer"
       >
