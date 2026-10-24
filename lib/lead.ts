@@ -9,7 +9,8 @@ export function sendLead(type: LeadType, fields: Record<string, string | undefin
     body: JSON.stringify({ type, ...fields, page: window.location.pathname }),
     keepalive: true,
   })
-    .then((r) => r.ok)
+    // stored: false means the lead never reached the Sheet — say so instead of a false "thank you".
+    .then(async (r) => r.ok && (await r.json().catch(() => ({}))).stored !== false)
     .catch(() => false);
 }
 

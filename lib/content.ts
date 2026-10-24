@@ -71,7 +71,11 @@ export function getPosts(): Post[] {
         keywords: (meta.keywords ?? "").split(",").map((k) => k.trim()).filter(Boolean),
         service: meta.service || undefined,
         image: meta.image || undefined,
-        html: marked.parse(body, { async: false }) as string,
+        // Source links open in a new tab so readers stay on the article.
+        html: (marked.parse(body, { async: false }) as string).replace(
+          /<a href="(https?:\/\/[^"]+)"/g,
+          '<a href="$1" target="_blank" rel="noopener noreferrer"',
+        ),
         readingMinutes: Math.max(1, Math.round(body.split(/\s+/).length / 200)),
       };
     })
