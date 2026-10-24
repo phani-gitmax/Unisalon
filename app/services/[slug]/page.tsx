@@ -8,6 +8,7 @@ import { fromPrice } from "@/lib/format";
 import { serviceSchema, faqSchema, breadcrumbSchema } from "@/lib/schema";
 import { getPosts } from "@/lib/content";
 import { JsonLd } from "@/components/JsonLd";
+import { AreaLinks } from "@/components/AreaLinks";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -57,9 +58,14 @@ export default async function ServicePage({ params }: Props) {
             <nav className="crumbs" aria-label="Breadcrumb">
               <Link href="/">Home</Link> / <Link href="/#services">Services</Link> / <span>{s.name}</span>
             </nav>
-            <p className="eyebrow">{s.for === "Unisex" ? "For men & women" : `For ${s.for.toLowerCase()}`} · From {fromPrice(s)}</p>
+            <p className="eyebrow">{s.for === "Unisex" ? "For men & women" : `For ${s.for.toLowerCase()}`} · From {fromPrice(s)} · {s.duration}</p>
             <h1>{s.seoTitle}</h1>
             <p className="lead">{s.intro}</p>
+            <ul className="svc-highlights" aria-label="What's included">
+              {s.highlights.map((h) => (
+                <li key={h}>{h}</li>
+              ))}
+            </ul>
             <div className="hero-actions">
               <Link href={`/book?service=${s.slug}`} className="btn btn-dark" prefetch={false}>Book {s.name.toLowerCase()}</Link>
               <a href="#prices" className="link-arrow">See prices ↓</a>
@@ -88,7 +94,7 @@ export default async function ServicePage({ params }: Props) {
               </ul>
             </div>
           ))}
-          <p className="muted small">Available at both branches in Alkapur Township · Serving {site.areas.join(", ")}.</p>
+          <p className="muted small">Available at both branches in Alkapur Township · Serving <AreaLinks />.</p>
 
           <div className="faq">
             <h2>Questions</h2>

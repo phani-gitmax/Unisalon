@@ -138,6 +138,8 @@ export type Service = {
   intro: string;
   groups: { title: string; items: { name: string; price: string }[] }[];
   faqs: { q: string; a: string }[];
+  duration: string; // typical appointment length
+  highlights: string[]; // what's included — confirmed by the salon
   verified: boolean; // true = prices copied from the salon's price list
   from?: string; // overrides the automatic "From ₹…" price
   photo: string; // in /public/photos — replace with your own salon photos any time
@@ -184,7 +186,11 @@ export const services: Service[] = [
     ],
     faqs: [
       { q: "How much is a men's haircut in Manikonda at Unisalon?", a: "₹220 with a regular stylist, or ₹400 with a senior stylist." },
+      { q: "Do I need an appointment for a haircut?", a: "Walk-ins are welcome, but advance booking is recommended on weekends to avoid waiting." },
+      { q: "Are kids' haircuts available?", a: "Yes, our stylists are patient and experienced with toddlers' and kids' haircuts." },
     ],
+    duration: "30–45 mins",
+    highlights: ["Detailed pre-cut consultation", "Relaxing hair wash included", "Blow-dry & styling finish", "Stylists trained in Mumbai since 2011"],
   },
   {
     slug: "hair-styling-in-manikonda",
@@ -208,7 +214,12 @@ export const services: Service[] = [
         ],
       },
     ],
-    faqs: [{ q: "Can I book styling for an event?", a: "Yes — book a slot ahead so your stylist is ready when you arrive." }],
+    faqs: [
+      { q: "Can I book styling for an event?", a: "Yes — book a slot ahead so your stylist is ready when you arrive." },
+      { q: "What products do you use for hair wash?", a: "We use professional, sulfate-free salon shampoos and conditioners matched to your scalp type." },
+    ],
+    duration: "30 mins",
+    highlights: ["Premium scalp massage wash", "Thermal heat protection applied", "Volume or sleek finish", "Lasting all-day hold"],
   },
   {
     slug: "hair-spa-in-manikonda",
@@ -240,7 +251,11 @@ export const services: Service[] = [
         ],
       },
     ],
-    faqs: [{ q: "How often should I get a hair spa?", a: "Every 3–4 weeks is ideal for dry or chemically treated hair." }],
+    faqs: [
+      { q: "How often should I get a hair spa?", a: "For hard water damage and dry scalp, once every 3 to 4 weeks is recommended." },
+    ],
+    duration: "45–60 mins",
+    highlights: ["Steam infusion for root nourishment", "Anti-dandruff & anti-hairfall options", "20-min neck and shoulder massage", "Immediate softness and shine"],
   },
   {
     slug: "hair-colour-in-manikonda",
@@ -264,7 +279,12 @@ export const services: Service[] = [
         ],
       },
     ],
-    faqs: [{ q: "Do you offer ammonia-free colour?", a: "Ask your stylist for ammonia-free options during your consultation." }],
+    faqs: [
+      { q: "Do you offer ammonia-free colour?", a: "Yes — ammonia-free colour options are available for global colour and root touch-ups." },
+      { q: "Will hair colouring damage my hair?", a: "We apply bond-protecting treatments during the colouring process to keep hair strength and texture intact." },
+    ],
+    duration: "60–120 mins",
+    highlights: ["Ammonia-free formulation options", "Zero brassiness guarantee", "Expert colour-matching", "Post-colour conditioning seal"],
   },
   {
     slug: "keratin-treatment-in-manikonda",
@@ -286,7 +306,11 @@ export const services: Service[] = [
         ],
       },
     ],
-    faqs: [{ q: "How long does keratin last?", a: "Typically 3–5 months, depending on hair type and aftercare." }],
+    faqs: [
+      { q: "How long does keratin last?", a: "With recommended sulfate-free shampoos, results typically last between 4 and 6 months." },
+    ],
+    duration: "2.5–3.5 hours",
+    highlights: ["Formaldehyde-free safe formulas", "Tames 95% of frizz and curls", "Results last 4 to 6 months", "Includes complete post-care guidance"],
   },
   {
     slug: "facial-in-manikonda",
@@ -316,7 +340,12 @@ export const services: Service[] = [
         ],
       },
     ],
-    faqs: [{ q: "Which facial is right for me?", a: "Your therapist will check your skin type and suggest the best option." }],
+    faqs: [
+      { q: "Which facial is right for me?", a: "Your therapist will check your skin type and suggest the best option." },
+      { q: "Which facial is best for sun tan?", a: "Our O3+ and herbal de-tan clean-up therapies deliver instant results for tanned skin." },
+    ],
+    duration: "30–60 mins",
+    highlights: ["Skin-type specific clean-up", "Herbal and dermat-tested brands", "Tan removal and pore extraction", "Instant glowing rejuvenation"],
   },
   {
     slug: "bridal-makeup-in-manikonda",
@@ -338,7 +367,11 @@ export const services: Service[] = [
         ],
       },
     ],
-    faqs: [{ q: "Do you offer a makeup trial?", a: "Yes, trials are available before the wedding. Ask when you book." }],
+    faqs: [
+      { q: "Do you offer bridal makeup trials?", a: "Yes, we provide prior makeup and hair trial consultations to lock in your preferred wedding look." },
+    ],
+    duration: "2–3 hours",
+    highlights: ["Waterproof & sweat-resistant HD makeup", "Complete saree/lehenga draping", "Bridal trials available", "On-time salon delivery"],
   },
 ];
 

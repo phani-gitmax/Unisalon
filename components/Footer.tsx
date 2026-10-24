@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { site, services, branchAddress } from "@/lib/site";
 import { hoursText } from "@/lib/format";
+import { AreaLinks } from "./AreaLinks";
 
 export function Footer() {
   return (
@@ -44,7 +45,7 @@ export function Footer() {
       </div>
       <div className="wrap foot-bottom">
         <span>© {new Date().getFullYear()} {site.brand} · <a href={`mailto:${site.email}`}>{site.email}</a></span>
-        <span>Serving {site.areas.join(", ")}</span>
+        <span>Serving <AreaLinks /></span>
       </div>
     </footer>
   );

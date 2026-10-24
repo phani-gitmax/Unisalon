@@ -17,6 +17,7 @@ npm run seo-check    # SEO health check (run against a running server)
 | This month's offer (written by automation) | `content/offer.json` |
 | Offers the automation is allowed to use | `content/offers-pool.json` |
 | Trends articles (Markdown) | `content/trends/*.md` |
+| Nearby area pages (`/salon-near/<area>`) — drive times from Google Maps | `lib/areas.ts` |
 | Google Business Profile post drafts | `content/gbp-posts/` |
 | Colours (light + dark), glass and fonts | top of `app/globals.css`, `app/layout.tsx` |
 

@@ -312,6 +312,22 @@ strong { font-weight: 500; }
 .svc-hero-img { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--r); }
 .svc-hero-img img { object-fit: cover; filter: brightness(var(--photo)); }
 .svc-grid.four { grid-template-columns: repeat(4, 1fr); }
+/* Area pages */
+.area-branch-name { font-size: 1.8rem; margin-bottom: .2em; }
+.area-route { font-size: .95rem; margin-bottom: .6em; }
+.area-route strong { color: var(--gold); font-weight: 500; }
+.area-services { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.area-services a { display: grid; gap: 2px; text-decoration: none; padding: 16px 18px; border-radius: 16px; border: 1px solid var(--glass-border); background: var(--glass); }
+.area-services a:hover { border-color: var(--gold); }
+.area-services strong { font-family: var(--display); font-size: 1.3rem; font-weight: 400; }
+.area-services span { color: var(--muted); font-size: .86rem; }
+.area-others { margin-top: 32px; line-height: 2; }
+.area-others a, .area-links a { text-decoration: none; border-bottom: 1px solid var(--line-strong); }
+.area-others a:hover, .area-links a:hover { color: var(--gold); }
+.svc-highlights { list-style: none; padding: 0; margin: 4px 0 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; font-size: .95rem; }
+.svc-highlights li { position: relative; padding-left: 22px; }
+.svc-highlights li::before { content: "✓"; position: absolute; left: 0; color: var(--gold); }
+@media (max-width: 760px) { .svc-highlights { grid-template-columns: 1fr; } }
 
 /* About */
 .timeline { list-style: none; padding: 0; margin: 0; }

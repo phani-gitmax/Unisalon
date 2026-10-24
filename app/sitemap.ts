@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { site, services } from "@/lib/site";
 import { getPosts, categories } from "@/lib/content";
+import { areas } from "@/lib/areas";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -11,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/book`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${site.url}/prices`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${site.url}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+    ...areas.map((a) => ({ url: `${site.url}/salon-near/${a.slug}`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.7 })),
     { url: `${site.url}/trends`, lastModified: posts[0] ? new Date(posts[0].date) : now, changeFrequency: "weekly", priority: 0.7 },
     ...Object.keys(categories)
       .filter((c) => posts.some((p) => p.category === c))
