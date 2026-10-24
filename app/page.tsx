@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { site, services, branchAddress } from "@/lib/site";
 import { hoursText, fromPrice } from "@/lib/format";
-import { organizationSchema, branchSchema } from "@/lib/schema";
+import { homeGraphSchema } from "@/lib/schema";
 import { getGoogleReviews } from "@/lib/reviews";
 import { getOffer, getPosts } from "@/lib/content";
 import { Reviews } from "@/components/Reviews";
@@ -19,22 +19,20 @@ export default async function Home() {
 
   return (
     <main>
-      <JsonLd data={organizationSchema()} />
-      {site.branches.map((b) => (
-        <JsonLd key={b.id} data={branchSchema(b, reviews)} />
-      ))}
+      <JsonLd data={homeGraphSchema(reviews)} />
 
       {/* Hero */}
       <section className="hero">
         <Image src={site.heroPhoto} alt="Stylist brushing a client's long black hair at Unisalon" fill priority sizes="100vw" quality={60} className="hero-img" />
         <div className="wrap hero-inner">
           <div className="hero-card glass-strong">
-            <p className="eyebrow">Unisex salon · Manikonda, Hyderabad</p>
-            <h1>
+            {/* The H1 carries the search keywords; the big tagline below is display text only. */}
+            <h1 className="eyebrow hero-h1">Premium Unisex Hair Salon &amp; Spa in Manikonda, Hyderabad</h1>
+            <p className="hero-display">
               Your vibe.
               <br />
               <em>Your style.</em>
-            </h1>
+            </p>
             <p className="hero-sub">
               Expert cuts, colour, spa and beauty for men, women and kids — at two salons in Alkapur Township, open every day.
             </p>

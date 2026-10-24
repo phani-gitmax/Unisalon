@@ -42,9 +42,9 @@ export const site = {
       phoneDisplay: "97047 60328",
       phone: "+919704760328",
       whatsapp: "919704760328", // TODO: confirm this number is on WhatsApp
-      // TODO: exact pin from Google Maps (right-click the pin → copy coordinates)
-      lat: 17.3914,
-      lng: 78.3598,
+      // Pin from the branch's Google Maps link (mapsUrl below).
+      lat: 17.3913713,
+      lng: 78.3678677,
       mapsUrl: "https://maps.app.goo.gl/CqtsmSVbngG98Lg9A",
       placeId: "", // TODO: Google Place ID of this branch's Business Profile
     },
@@ -59,8 +59,8 @@ export const site = {
       phoneDisplay: "76708 26262",
       phone: "+917670826262",
       whatsapp: "917670826262", // TODO: confirm this number is on WhatsApp
-      lat: 17.3935, // TODO
-      lng: 78.3625, // TODO
+      lat: 17.394, // TODO: approximate — replace with the pin from this branch's Google Maps share link
+      lng: 78.3775, // TODO: approximate
       mapsUrl: "https://www.google.com/maps/search/?api=1&query=Unisalon+Challas+Myspace+Alkapur+Township", // TODO: share link
       placeId: "", // TODO
     },

@@ -5,10 +5,6 @@ import { site, services, allItems, type Service, type Branch } from "./site";
 import type { GoogleReviews } from "./reviews";
 import type { Post } from "./content";
 
-const days: Record<string, string> = Object.fromEntries(
-  ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((d) => [d, `https://schema.org/${d}`]),
-);
-
 const orgId = `${site.url}/#organization`;
 
 export function organizationSchema() {
@@ -32,19 +28,19 @@ export function branchSchema(b: Branch, reviews: GoogleReviews | null) {
     "@context": "https://schema.org",
     "@type": ["HairSalon", "BeautySalon"],
     "@id": `${site.url}/#${b.id}`,
-    name: `${site.brand} – ${b.name}`,
+    name: `${site.brand} - ${b.name.replace(/ Branch$/, "")}`,
     description: site.description,
     url: site.url,
     telephone: b.phone,
     email: site.email,
-    image: `${site.url}/opengraph-image`,
+    image: `${site.url}${site.heroPhoto}`,
     logo: `${site.url}/logo.webp`,
     priceRange: "₹₹",
     parentOrganization: { "@id": orgId },
     address: {
       "@type": "PostalAddress",
       streetAddress: b.street,
-      addressLocality: b.locality,
+      addressLocality: `${b.locality}, ${b.city}`,
       addressRegion: b.region,
       postalCode: b.postalCode,
       addressCountry: "IN",
@@ -54,7 +50,7 @@ export function branchSchema(b: Branch, reviews: GoogleReviews | null) {
     areaServed: site.areas.map((name) => ({ "@type": "Place", name: `${name}, Hyderabad` })),
     openingHoursSpecification: site.hours.map((h) => ({
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: h.days.map((d) => days[d]),
+      dayOfWeek: h.days,
       opens: h.open,
       closes: h.close,
     })),
@@ -71,6 +67,15 @@ export function branchSchema(b: Branch, reviews: GoogleReviews | null) {
       target: { "@type": "EntryPoint", urlTemplate: `${site.url}/book` },
       result: { "@type": "Reservation", name: "Salon appointment" },
     },
+  };
+}
+
+// Home page: the business and both branches as one connected graph.
+export function homeGraphSchema(reviews: GoogleReviews | null) {
+  const strip = ({ "@context": _, ...node }: Record<string, unknown>) => node;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [strip(organizationSchema()), ...site.branches.map((b) => strip(branchSchema(b, reviews)))],
   };
 }
 
