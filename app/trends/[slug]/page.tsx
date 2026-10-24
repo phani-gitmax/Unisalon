@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { site, getService } from "@/lib/site";
@@ -22,7 +23,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: p.description,
     keywords: p.keywords,
     alternates: { canonical: `/trends/${p.slug}` },
-    openGraph: { type: "article", title: p.title, description: p.description, url: `${site.url}/trends/${p.slug}`, publishedTime: p.date },
+    openGraph: {
+      type: "article",
+      title: p.title,
+      description: p.description,
+      url: `${site.url}/trends/${p.slug}`,
+      publishedTime: p.date,
+      ...(p.image && { images: [{ url: p.image, width: 1600, height: 900 }] }),
+    },
   };
 }
 
@@ -51,6 +59,11 @@ export default async function PostPage({ params }: Props) {
           </nav>
           <h1>{p.title}</h1>
           <p className="muted small">{formatDate(p.date)} · {p.readingMinutes} min read · {site.brand}</p>
+          {p.image && (
+            <div className="post-hero">
+              <Image src={p.image} alt={p.title} fill priority sizes="(max-width: 860px) 100vw, 820px" quality={60} />
+            </div>
+          )}
         </div>
       </section>
       <article className="wrap narrow prose" dangerouslySetInnerHTML={{ __html: p.html }} />

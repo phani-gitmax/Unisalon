@@ -3,14 +3,15 @@ import Link from "next/link";
 import { getService } from "@/lib/site";
 import { categories, formatDate, type Post } from "@/lib/content";
 
-// Trend article card; uses the related service's photo so articles don't need their own image.
+// Trend article card: the article's own `image`, or the related service's photo if it has none.
 export function PostCard({ post }: { post: Post }) {
   const service = post.service ? getService(post.service) : undefined;
+  const photo = post.image ?? service?.photo;
   return (
     <Link href={`/trends/${post.slug}`} className="post-card glass">
-      {service && (
+      {photo && (
         <div className="post-card-img">
-          <Image src={service.photo} alt={`${service.name} at Unisalon, Manikonda`} fill sizes="(max-width: 760px) 100vw, 33vw" quality={60} />
+          <Image src={photo} alt={post.title} fill sizes="(max-width: 760px) 100vw, 33vw" quality={60} />
         </div>
       )}
       <div className="post-card-body">

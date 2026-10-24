@@ -49,4 +49,4 @@ Setup steps: [AUTOMATION.md → One-time setup](AUTOMATION.md#one-time-setup-own
 
 ## Photos
 
-The photos in `public/photos/` are licensed stock photos of Indian clients and stylists from Magnific (Freepik), downloaded under the owner's Premium+ plan, which covers commercial use on this website. Keep the faces Indian when swapping photos. Replace them with real photos of the salon, team and work by saving new files with the same names, or by changing the paths in `lib/site.ts` (`heroPhoto`, `gallery`, and each service's `photo`).
+The photos in `public/photos/` are licensed stock photos of Indian clients and stylists from Magnific (Trends article photos are in `public/photos/trends/`) (Freepik), downloaded under the owner's Premium+ plan, which covers commercial use on this website. Keep the faces Indian when swapping photos. Replace them with real photos of the salon, team and work by saving new files with the same names, or by changing the paths in `lib/site.ts` (`heroPhoto`, `gallery`, and each service's `photo`).

@@ -334,6 +334,8 @@ strong { font-weight: 500; }
 .related { margin-top: 48px; }
 
 /* Articles */
+.post-hero { position: relative; aspect-ratio: 16 / 9; margin-top: 28px; border-radius: var(--r); overflow: hidden; }
+.post-hero img { object-fit: cover; filter: brightness(var(--photo)); }
 .prose { padding-top: 20px; padding-bottom: 20px; font-size: 1.08rem; }
 .prose h2 { font-size: 2rem; margin-top: 1.6em; }
 .prose h3 { font-size: 1.5rem; margin-top: 1.3em; }

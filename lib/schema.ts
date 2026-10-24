@@ -104,7 +104,7 @@ export function articleSchema(p: Post) {
     keywords: p.keywords.join(", "),
     url: `${site.url}/trends/${p.slug}`,
     mainEntityOfPage: `${site.url}/trends/${p.slug}`,
-    image: `${site.url}/opengraph-image`,
+    image: p.image ? `${site.url}${p.image}` : `${site.url}/opengraph-image`,
     author: { "@type": "Organization", name: site.brand, url: site.url },
     publisher: { "@id": orgId },
   };

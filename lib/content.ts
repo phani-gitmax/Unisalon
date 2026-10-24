@@ -37,6 +37,7 @@ export type Post = {
   date: string;
   keywords: string[];
   service?: string;
+  image?: string; // e.g. /photos/trends/<slug>.jpg — falls back to the service photo
   html: string;
   readingMinutes: number;
 };
@@ -69,6 +70,7 @@ export function getPosts(): Post[] {
         date: meta.date ?? "",
         keywords: (meta.keywords ?? "").split(",").map((k) => k.trim()).filter(Boolean),
         service: meta.service || undefined,
+        image: meta.image || undefined,
         html: marked.parse(body, { async: false }) as string,
         readingMinutes: Math.max(1, Math.round(body.split(/\s+/).length / 200)),
       };

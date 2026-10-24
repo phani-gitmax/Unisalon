@@ -5,6 +5,7 @@ date: 2026-10-24
 category: bridal
 keywords: bridal makeup Manikonda, bridal makeup Hyderabad, bridal hairstyle Hyderabad, bridal makeup trial Manikonda, wedding makeup Alkapur Township
 service: bridal-makeup-in-manikonda
+image: /photos/trends/bridal-makeup-hair-trends-2026-wedding-season.jpg
 ---
 
 The wedding season is here. November to February is when Hyderabad's calendars fill up with mehendis, sangeets and muhurthams, and every bride has the same two questions: "What's in this year?" and "Will it still look good after eight hours?"
