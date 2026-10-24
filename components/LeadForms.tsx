@@ -22,7 +22,7 @@ export function Callback() {
     if (!validPhone(f.phone)) return setError("Please enter a valid 10-digit mobile number.");
     setError("");
     setStatus("sending");
-    const ok = await sendLead("callback", { name: f.name, phone: f.phone, service: f.service, website: f.website });
+    const ok = await sendLead("callback", { name: f.name, phone: f.phone, service: f.service, branch: f.branch, website: f.website });
     if (!ok) {
       setStatus("idle");
       return setError(`Couldn't send — please call ${mainBranch.phoneDisplay} instead.`);
@@ -56,6 +56,15 @@ export function Callback() {
           <option value="">Any service / not sure</option>
           {services.map((s) => (
             <option key={s.slug} value={s.name}>{s.name}</option>
+          ))}
+        </select>
+      </label>
+      <label>
+        <span className="sr-only">Branch</span>
+        <select name="branch" defaultValue="">
+          <option value="">Either branch</option>
+          {site.branches.map((b) => (
+            <option key={b.id} value={b.name}>{b.name.replace(/ Branch$/, "")}</option>
           ))}
         </select>
       </label>

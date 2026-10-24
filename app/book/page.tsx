@@ -34,17 +34,17 @@ export default async function BookPage({ searchParams }: Props) {
             <div key={b.id} className="aside-branch">
               <p className="aside-name">{b.name.replace(" Branch", "")}</p>
               <TrackedLink event="click_call" href={`tel:${b.phone}`}>{b.phoneDisplay}</TrackedLink>
+              <TrackedLink
+                event="click_whatsapp"
+                className="aside-wa"
+                href={`https://wa.me/${b.whatsapp}?text=${encodeURIComponent(`Hi ${site.name}! I'd like to book an appointment at ${b.name.replace(/ Branch$/, "")}.`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                WhatsApp →
+              </TrackedLink>
             </div>
           ))}
-          <TrackedLink
-            event="click_whatsapp"
-            className="btn btn-line btn-block"
-            href={`https://wa.me/${site.branches[0].whatsapp}?text=${encodeURIComponent(`Hi ${site.name}! I'd like to book an appointment.`)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Chat on WhatsApp
-          </TrackedLink>
           <p className="muted small">
             Open {hoursText[0].days.toLowerCase()}, {hoursText[0].time}. Walk-ins welcome — booking guarantees your slot.
           </p>

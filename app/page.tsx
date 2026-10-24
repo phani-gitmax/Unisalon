@@ -12,6 +12,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { TrackedLink } from "@/components/Analytics";
 import { Callback, Subscribe } from "@/components/LeadForms";
 import { PostCard } from "@/components/PostCard";
+import { BranchPicker } from "@/components/BranchPicker";
 
 export const metadata: Metadata = {
   title: { absolute: SITE_TITLE },
@@ -203,15 +204,7 @@ export default async function Home() {
           <p className="muted">Book online in under a minute, or message us on WhatsApp.</p>
           <div className="hero-actions center-row">
             <Link href="/book" className="btn btn-dark" prefetch={false}>Book an appointment</Link>
-            <TrackedLink
-              event="click_whatsapp"
-              className="btn btn-line"
-              href={`https://wa.me/${site.branches[0].whatsapp}?text=${encodeURIComponent(`Hi ${site.name}! I'd like to book an appointment.`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WhatsApp us
-            </TrackedLink>
+            <BranchPicker action="whatsapp" className="btn btn-line">WhatsApp us</BranchPicker>
           </div>
         </div>
       </section>

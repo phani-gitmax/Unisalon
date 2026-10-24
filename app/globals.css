@@ -424,6 +424,21 @@ strong { font-weight: 500; }
 
 .mobile-bar { display: none; }
 
+/* Branch picker (Call / WhatsApp): a centred glass card on desktop, a bottom sheet on phones */
+.branch-sheet { padding: 0; border-radius: 24px; width: min(440px, calc(100vw - 32px)); color: var(--ink); }
+.branch-sheet::backdrop { background: rgba(10, 8, 12, .45); }
+.branch-sheet-inner { padding: 24px 22px 22px; display: grid; gap: 10px; }
+.branch-sheet-head { position: relative; margin-bottom: 4px; }
+.branch-sheet-head h2 { font-size: 1.8rem; margin: 0; }
+.branch-sheet-head .eyebrow { margin-bottom: 6px; }
+.branch-sheet-close { position: absolute; top: -6px; right: -4px; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--glass); color: var(--ink); font-size: 1.4rem; line-height: 1; cursor: pointer; }
+.branch-option { display: grid; gap: 4px; text-decoration: none; padding: 16px 18px; border-radius: 16px; border: 1px solid var(--line-strong); background: var(--input); transition: border-color .15s; }
+.branch-option:hover { border-color: var(--gold); }
+.branch-option strong { font-family: var(--display); font-size: 1.35rem; font-weight: 400; }
+.branch-option span { color: var(--muted); font-size: .86rem; line-height: 1.5; }
+.branch-option .branch-option-cta { color: var(--gold); font-size: .74rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; margin-top: 4px; }
+.aside-wa { display: inline-block; margin-left: 14px; font-size: .74rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); text-decoration: none; }
+
 @media (max-width: 1080px) {
   .svc-grid, .svc-grid.four { grid-template-columns: repeat(3, 1fr); }
   .nav ul { gap: 22px; }
@@ -497,8 +512,10 @@ strong { font-weight: 500; }
     display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 4px; position: fixed; z-index: 40;
     left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); padding: 5px; border-radius: 999px;
   }
-  .mobile-bar a { display: flex; align-items: center; justify-content: center; padding: 13px 0; border-radius: 999px; font-size: .7rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; }
-  .mobile-bar a.primary { background: var(--ink); color: var(--bg); }
+  .branch-sheet { margin: auto auto 12px; width: calc(100vw - 20px); }
+  .mobile-bar > button { font: inherit; background: none; border: 0; color: inherit; cursor: pointer; }
+  .mobile-bar > a, .mobile-bar > button { display: flex; align-items: center; justify-content: center; padding: 13px 0; border-radius: 999px; font-size: .7rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; }
+  .mobile-bar > a.primary { background: var(--ink); color: var(--bg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
