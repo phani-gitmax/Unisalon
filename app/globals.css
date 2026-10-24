@@ -457,7 +457,7 @@ strong { font-weight: 500; }
   .nav ul a { display: block; padding: 13px 0; font-size: .84rem; }
   /* Phone hero: photo on top, glass card overlapping its lower edge */
   .hero { min-height: 0; display: block; padding-top: 210px; }
-  .hero .hero-img { height: 320px !important; bottom: auto !important; object-position: center 70%; }
+  .hero .hero-img { height: 320px !important; bottom: auto !important; object-position: 88% center; }
   .hero::after { bottom: auto; height: 320px; }
   .hero-inner { padding-top: 0; padding-bottom: 12px; }
   .hero-card { padding: 28px 22px 24px; border-radius: 24px; }

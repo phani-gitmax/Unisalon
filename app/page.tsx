@@ -26,7 +26,7 @@ export default async function Home() {
 
       {/* Hero */}
       <section className="hero">
-        <Image src={site.heroPhoto} alt="Inside a bright, modern Unisalon styling floor" fill priority sizes="100vw" quality={60} className="hero-img" />
+        <Image src={site.heroPhoto} alt="Stylist brushing a client's long black hair at Unisalon" fill priority sizes="100vw" quality={60} className="hero-img" />
         <div className="wrap hero-inner">
           <div className="hero-card glass-strong">
             <p className="eyebrow">Unisex salon · Manikonda, Hyderabad</p>
@@ -145,7 +145,7 @@ export default async function Home() {
       <section className="section split">
         <div className="wrap split-grid">
           <div className="split-img">
-            <Image src={site.gallery[0]} alt="Styling stations at the salon" fill sizes="(max-width: 900px) 100vw, 50vw" quality={60} />
+            <Image src={site.gallery[0]} alt="Smiling client getting a haircut at the salon" fill sizes="(max-width: 900px) 100vw, 50vw" quality={60} />
           </div>
           <div>
             <p className="eyebrow">Since {site.since}</p>

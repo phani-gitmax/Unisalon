@@ -28,7 +28,7 @@ export default function AboutPage() {
       <section className="section-tight">
         <div className="wrap split-grid">
           <div className="split-img tall">
-            <Image src={site.gallery[1]} alt="The salon floor" fill sizes="(max-width: 900px) 100vw, 50vw" />
+            <Image src={site.gallery[1]} alt="Barber getting a client ready for his haircut" fill sizes="(max-width: 900px) 100vw, 50vw" quality={60} />
           </div>
           <ol className="timeline">
             {site.story.map((s) => (
