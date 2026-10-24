@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Jost } from "next/font/google";
 import { site } from "@/lib/site";
+import { SITE_TITLE, OG_BANNER } from "@/lib/seo";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { MobileBar } from "@/components/MobileBar";
@@ -17,8 +18,8 @@ const themeScript = `try{var t=localStorage.getItem("theme");if(t)document.docum
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.brand} – Unisex Salon in Manikonda, Hyderabad`,
-    template: `%s | ${site.name}`,
+    default: SITE_TITLE,
+    template: `%s | ${site.brand}`,
   },
   description: site.description,
   keywords: [
@@ -37,10 +38,11 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: site.url,
     siteName: site.brand,
-    title: `${site.brand} – Unisex Salon in Manikonda, Hyderabad`,
+    title: SITE_TITLE,
     description: site.description,
+    images: [OG_BANNER],
   },
-  twitter: { card: "summary_large_image" },
+  twitter: { card: "summary_large_image", title: SITE_TITLE, description: site.description, images: [OG_BANNER] },
   robots: { index: true, follow: true },
   verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION },
 };

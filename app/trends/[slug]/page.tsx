@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -19,18 +20,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = getPost((await params).slug);
   if (!p) return {};
   return {
-    title: p.title,
-    description: p.description,
-    keywords: p.keywords,
-    alternates: { canonical: `/trends/${p.slug}` },
-    openGraph: {
-      type: "article",
+    ...pageMetadata({
       title: p.title,
       description: p.description,
-      url: `${site.url}/trends/${p.slug}`,
+      path: `/trends/${p.slug}`,
+      type: "article",
       publishedTime: p.date,
-      ...(p.image && { images: [{ url: p.image, width: 1600, height: 900 }] }),
-    },
+      ...(p.image && { image: { url: p.image, width: 1600, height: 900 } }),
+    }),
+    keywords: p.keywords,
   };
 }
 

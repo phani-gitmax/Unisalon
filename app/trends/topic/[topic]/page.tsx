@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { site } from "@/lib/site";
@@ -24,9 +25,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const label = categories[topic];
   const empty = !getPosts().some((p) => p.category === topic);
   return {
-    title: `${label} – Trends & Tips from Manikonda`,
-    description: `${label} trends and advice from the stylists at ${site.brand}, Alkapur Township, Manikonda, Hyderabad.`,
-    alternates: { canonical: `/trends/topic/${topic}` },
+    ...pageMetadata({
+      title: `${label} – Trends & Tips from Manikonda`,
+      description: `${label} trends and advice from the stylists at ${site.brand}, Alkapur Township, Manikonda, Hyderabad.`,
+      path: `/trends/topic/${topic}`,
+    }),
     // Topics without articles yet stay out of Google until the first one is published.
     robots: empty ? { index: false, follow: true } : undefined,
   };

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -18,12 +19,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const s = getService((await params).slug);
   if (!s) return {};
   const description = `${s.name} in Manikonda from ${fromPrice(s)}. ${s.short} 2 branches in Alkapur Township, open 9 AM–9 PM daily.`;
-  return {
+  return pageMetadata({
     title: s.seoTitle,
     description,
-    alternates: { canonical: `/services/${s.slug}` },
-    openGraph: { title: `${s.seoTitle} | ${site.name}`, description, url: `${site.url}/services/${s.slug}`, images: [s.photo] },
-  };
+    path: `/services/${s.slug}`,
+    image: { url: s.photo, width: 1000, height: 1250 },
+  });
 }
 
 export default async function ServicePage({ params }: Props) {

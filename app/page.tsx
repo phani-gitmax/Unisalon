@@ -1,8 +1,10 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { site, services, branchAddress } from "@/lib/site";
 import { hoursText, fromPrice } from "@/lib/format";
 import { homeGraphSchema } from "@/lib/schema";
+import { SITE_TITLE } from "@/lib/seo";
 import { getGoogleReviews } from "@/lib/reviews";
 import { getOffer, getPosts } from "@/lib/content";
 import { Reviews } from "@/components/Reviews";
@@ -10,6 +12,12 @@ import { JsonLd } from "@/components/JsonLd";
 import { TrackedLink } from "@/components/Analytics";
 import { Callback, Subscribe } from "@/components/LeadForms";
 import { PostCard } from "@/components/PostCard";
+
+export const metadata: Metadata = {
+  title: { absolute: SITE_TITLE },
+  description: site.description,
+  alternates: { canonical: "/" },
+};
 
 export default async function Home() {
   const reviews = await getGoogleReviews();

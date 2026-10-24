@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 import { getPosts } from "@/lib/content";
 import { breadcrumbSchema } from "@/lib/schema";
@@ -6,11 +7,11 @@ import { JsonLd } from "@/components/JsonLd";
 import { PostCard, TopicChips } from "@/components/PostCard";
 import { Subscribe } from "@/components/LeadForms";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Beauty Trends & Salon Tips – Hyderabad",
   description: `The latest hair, skin, bridal and grooming trends — and what suits you — from the stylists at ${site.brand}, Manikonda, Hyderabad.`,
-  alternates: { canonical: "/trends" },
-};
+  path: "/trends",
+});
 
 export default function TrendsIndex() {
   const posts = getPosts();

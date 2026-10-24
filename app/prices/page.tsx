@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { site, services } from "@/lib/site";
 import { breadcrumbSchema } from "@/lib/schema";
 import { JsonLd } from "@/components/JsonLd";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Salon Price List – Haircut, Spa, Colour, Facial",
   description: `Salon prices in Manikonda: men's haircut ₹220, women's cut & styling ₹800, L'Oréal hair spa from ₹800, plus colour, keratin, facials and bridal.`,
-  alternates: { canonical: "/prices" },
-};
+  path: "/prices",
+});
 
 export default function PricesPage() {
   return (

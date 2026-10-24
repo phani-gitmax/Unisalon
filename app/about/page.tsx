@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/site";
@@ -6,11 +7,11 @@ import { breadcrumbSchema, faqSchema } from "@/lib/schema";
 import { JsonLd } from "@/components/JsonLd";
 import { TrackedLink } from "@/components/Analytics";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About Shashi & Membership Packages",
   description: `The story of ${site.brand} — from Mumbai's salons in ${site.since} to two branches in Alkapur Township, Manikonda. Meet the team and see membership packages.`,
-  alternates: { canonical: "/about" },
-};
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (

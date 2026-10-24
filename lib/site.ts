@@ -27,7 +27,7 @@ export const site = {
   tagline: "Your Vibe, Your Style",
   since: 2011,
   description:
-    "Unisex salon in Alkapur Township, Manikonda, Hyderabad. Haircuts, L'Oréal hair spa, colour, keratin, facials & bridal. 2 branches, open 9 AM–9 PM daily.",
+    "Premium unisex hair salon and spa in Alkapur Township, Manikonda. Professional haircuts, hair colour, keratin, styling, and bridal makeovers open 7 days a week.",
   email: "info@unisalon.in",
 
   branches: [

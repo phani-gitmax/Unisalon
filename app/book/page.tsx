@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 import { hoursText } from "@/lib/format";
 import { BookingFlow } from "@/components/BookingFlow";
@@ -6,11 +7,11 @@ import { TrackedLink } from "@/components/Analytics";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Book an Appointment – Manikonda Salon",
   description: `Book a haircut, hair spa, colour, facial or bridal makeover at ${site.brand}, Alkapur Township, Manikonda. Pick a branch and time in under a minute.`,
-  alternates: { canonical: "/book" },
-};
+  path: "/book",
+});
 
 type Props = { searchParams: Promise<{ service?: string }> };
 
