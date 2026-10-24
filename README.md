@@ -9,6 +9,8 @@ npm run build        # production build
 npm run seo-check    # SEO health check (run against a running server)
 ```
 
+> **Before changing anything, read [PROJECT-NOTES.md](PROJECT-NOTES.md)** — decisions already made and pending owner tasks.
+
 ## Where things live
 
 | What | File |
