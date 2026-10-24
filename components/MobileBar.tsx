@@ -5,7 +5,7 @@ import { TrackedLink } from "./Analytics";
 // Sticky Call / WhatsApp / Book bar on phones — always one tap from a booking.
 export function MobileBar() {
   return (
-    <nav className="mobile-bar" aria-label="Quick contact">
+    <nav className="mobile-bar glass-strong" aria-label="Quick contact">
       <TrackedLink event="click_call" href={`tel:${mainBranch.phone}`}>Call</TrackedLink>
       <TrackedLink
         event="click_whatsapp"
@@ -15,7 +15,7 @@ export function MobileBar() {
       >
         WhatsApp
       </TrackedLink>
-      <Link href="/book" className="primary">Book appointment</Link>
+      <Link href="/book" className="primary" prefetch={false}>Book appointment</Link>
     </nav>
   );
 }

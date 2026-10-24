@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { site, services, allItems, branchAddress } from "@/lib/site";
 import { track } from "./Analytics";
+import { sendLead, validPhone } from "@/lib/lead";
 
 type Picked = { name: string; price: string; category: string };
 
@@ -93,19 +94,13 @@ export function BookingFlow({ initialService }: { initialService?: string }) {
     e.preventDefault();
     const f = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
     if (!f.name.trim()) return setError("Please enter your name.");
-    if (f.phone.replace(/\D/g, "").length < 10) return setError("Please enter a valid 10-digit mobile number.");
+    if (!validPhone(f.phone)) return setError("Please enter a valid 10-digit mobile number.");
     if (!item || !branch || !date || !time) return setError("Please complete all steps.");
     setError("");
 
-    const lead = { name: f.name, phone: f.phone, message: f.message, website: f.website, service: item.name, branch: branch.name, date, time };
     // Save the lead without waiting, so WhatsApp opens straight from the tap
     // (browsers block pop-ups opened after an await).
-    fetch("/api/lead", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...lead, page: window.location.pathname }),
-      keepalive: true,
-    }).catch(() => {});
+    sendLead("booking", { name: f.name, phone: f.phone, message: f.message, website: f.website, service: item.name, branch: branch.name, date, time });
 
     const text = [
       `Hi ${site.name}! I'd like to book:`,
@@ -125,7 +120,7 @@ export function BookingFlow({ initialService }: { initialService?: string }) {
 
   if (done && item && branch) {
     return (
-      <div className="bf-done" role="status">
+      <div className="bf-done" role="status" ref={(el) => el?.scrollIntoView({ block: "start" })}>
         <div className="bf-check">✓</div>
         <h2>Almost done — tap send on WhatsApp</h2>
         <p>We&apos;ve opened WhatsApp with your booking. Send the message and we&apos;ll confirm your slot shortly.</p>

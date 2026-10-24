@@ -4,7 +4,11 @@
 
 import { NextResponse } from "next/server";
 
+// booking = 4-step booking page, callback = "call me back" box, subscribe = monthly offers & trends on WhatsApp
+const TYPES = ["booking", "callback", "subscribe"] as const;
+
 type Lead = {
+  type?: string;
   name?: string;
   phone?: string;
   service?: string;
@@ -29,14 +33,17 @@ export async function POST(req: Request) {
   // Bots fill every field; pretend success so they don't retry.
   if (body.website) return NextResponse.json({ ok: true });
 
+  const type = TYPES.find((t) => t === body.type) ?? "booking";
   const name = clean(body.name, 80);
   const phone = clean(body.phone, 20).replace(/[^\d+]/g, "");
-  if (!name || phone.replace(/\D/g, "").length < 10) {
-    return NextResponse.json({ ok: false, error: "Please enter your name and a valid phone number." }, { status: 400 });
+  if ((!name && type !== "subscribe") || phone.replace(/\D/g, "").length < 10) {
+    const error = type === "subscribe" ? "Please enter a valid phone number." : "Please enter your name and a valid phone number.";
+    return NextResponse.json({ ok: false, error }, { status: 400 });
   }
 
   const lead = {
     receivedAt: new Date().toISOString(),
+    type,
     name,
     phone,
     branch: clean(body.branch, 100),

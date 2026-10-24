@@ -16,9 +16,9 @@ npm run seo-check    # SEO health check (run against a running server)
 | Branches, phones, hours, services & prices, team, FAQs, memberships | `lib/site.ts` |
 | This month's offer (written by automation) | `content/offer.json` |
 | Offers the automation is allowed to use | `content/offers-pool.json` |
-| Blog posts (Markdown) | `content/blog/*.md` |
+| Trends articles (Markdown) | `content/trends/*.md` |
 | Google Business Profile post drafts | `content/gbp-posts/` |
-| Colours and fonts | top of `app/globals.css`, `app/layout.tsx` |
+| Colours (light + dark), glass and fonts | top of `app/globals.css`, `app/layout.tsx` |
 
 Items marked `TODO` are placeholders. Prices for colour, keratin, beauty and bridal (`verified: false`) are samples until replaced.
 
@@ -27,11 +27,12 @@ Items marked `TODO` are placeholders. Prices for colour, keratin, beauty and bri
 1. On `/book`, a visitor picks a service, a **branch**, a day and a time (4 taps), then enters name and phone.
 2. The lead goes to `/api/lead` → `LEAD_WEBHOOK_URL` (the Google Sheet).
 3. WhatsApp opens with the booking filled in, addressed to **that branch's** number.
-4. GA4 events: `generate_lead`, `click_call`, `click_whatsapp`, `click_directions`, `click_membership`, `click_write_review`.
+4. Two quicker lead boxes also post to `/api/lead`: **"Call me back"** on the home page (`type: callback`, emailed to you instantly by the sheet script) and **"Monthly offers & trends on WhatsApp"** on the home and Trends pages (`type: subscribe`).
+5. GA4 events: `generate_lead` (with `method`: booking_flow / callback / subscribe), `click_call`, `click_whatsapp`, `click_directions`, `click_membership`, `click_write_review`.
 
 ## SEO built in
 
-- A page per service ("<service> in Manikonda") and a blog, all in `sitemap.xml`.
+- A page per service ("<service> in Manikonda") and a Trends section (beauty trends & industry news, with topic pages), all in `sitemap.xml`.
 - Structured data: Organization + a `HairSalon` for **each branch** (address, map, hours, services, rating, booking action), plus Service, FAQ, Article and Breadcrumb data.
 - `scripts/seo-check.mjs` checks titles, descriptions, headings, canonicals, structured data, alt text and broken links.
 

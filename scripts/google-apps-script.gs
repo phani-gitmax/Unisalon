@@ -2,13 +2,15 @@
  * Unisalon lead sheet — paste into Extensions → Apps Script of your Google Sheet.
  * Setup steps are in AUTOMATION.md.
  *
- * 1. doPost: the website sends every booking here; it is saved as a new row.
+ * 1. doPost: the website sends every lead here; it is saved as a new row. `type` is
+ *    booking (booking page), callback ("call me back" box) or subscribe (WhatsApp offers list).
+ *    Call-back requests are also emailed straight away so someone can phone them.
  * 2. monthlyReport: emails last month's lead summary (total, by branch, by service, top days).
  *    Run setupMonthlyReport() once to schedule it for the 1st of every month.
  */
 
 const REPORT_TO = "info@unisalon.in"; // TODO: who receives the monthly report (comma-separate several)
-const HEADERS = ["receivedAt", "name", "phone", "branch", "service", "date", "time", "message", "page", "source"];
+const HEADERS = ["receivedAt", "type", "name", "phone", "branch", "service", "date", "time", "message", "page", "source"];
 
 function sheet_() {
   const sh = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
@@ -20,7 +22,19 @@ function doPost(e) {
   const lead = JSON.parse(e.postData.contents);
   const sh = sheet_();
   const headers = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
+  if (!headers.includes("type")) {
+    // Sheets created before lead types existed: add the column at the end.
+    sh.getRange(1, headers.length + 1).setValue("type");
+    headers.push("type");
+  }
   sh.appendRow(headers.map((h) => lead[h] ?? ""));
+  if (lead.type === "callback") {
+    MailApp.sendEmail(
+      REPORT_TO,
+      `Call back: ${lead.name} ${lead.phone}`,
+      `${lead.name} asked for a call back from the website.\n\nPhone: ${lead.phone}\nService: ${lead.service || "not sure"}\nTime: ${lead.receivedAt}`
+    );
+  }
   return ContentService.createTextOutput("ok");
 }
 
@@ -34,10 +48,18 @@ function monthlyReport() {
   const rows = sheet_().getDataRange().getValues();
   const headers = rows.shift();
   const col = (name) => headers.indexOf(name);
-  const leads = rows.map((r) => ({ at: new Date(r[col("receivedAt")]), branch: r[col("branch")] || "—", service: r[col("service")] || "Not specified" }));
+  const leads = rows.map((r) => ({
+    at: new Date(r[col("receivedAt")]),
+    type: (col("type") >= 0 && r[col("type")]) || "booking",
+    branch: r[col("branch")] || "—",
+    service: r[col("service")] || "Not specified",
+  }));
 
-  const month = leads.filter((l) => l.at >= start && l.at < end);
-  const prev = leads.filter((l) => l.at >= prevStart && l.at < start);
+  const all = leads.filter((l) => l.at >= start && l.at < end);
+  const subscribers = all.filter((l) => l.type === "subscribe").length;
+  // Bookings + call-backs are the leads; WhatsApp sign-ups are reported separately.
+  const month = all.filter((l) => l.type !== "subscribe");
+  const prev = leads.filter((l) => l.at >= prevStart && l.at < start && l.type !== "subscribe");
 
   const tally = (list, key) =>
     Object.entries(list.reduce((acc, l) => ((acc[l[key]] = (acc[l[key]] || 0) + 1), acc), {}))
@@ -53,7 +75,10 @@ function monthlyReport() {
   const body = [
     `Unisalon website leads — ${label}`,
     "",
-    `Total booking requests: ${month.length}` + (change === null ? "" : ` (${change >= 0 ? "+" : ""}${change}% vs previous month: ${prev.length})`),
+    `Total leads: ${month.length}` + (change === null ? "" : ` (${change >= 0 ? "+" : ""}${change}% vs previous month: ${prev.length})`),
+    "By type:",
+    tally(month, "type"),
+    `New WhatsApp offer sign-ups: ${subscribers}`,
     `Busiest day for bookings: ${busiest}`,
     "",
     "By branch:",
@@ -65,7 +90,7 @@ function monthlyReport() {
     `Full list: ${SpreadsheetApp.getActiveSpreadsheet().getUrl()}`,
   ].join("\n");
 
-  MailApp.sendEmail(REPORT_TO, `Unisalon leads — ${label}: ${month.length} bookings`, body);
+  MailApp.sendEmail(REPORT_TO, `Unisalon leads — ${label}: ${month.length} leads`, body);
 }
 
 function setupMonthlyReport() {

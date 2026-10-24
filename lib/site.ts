@@ -1,6 +1,6 @@
 // All business details live here. Replace the TODO placeholders with real values.
 // Changing this file updates the whole site: pages, SEO tags, Google structured data and the sitemap.
-// The monthly offer lives in content/offer.json and blog posts in content/blog/ (both updated by automation).
+// The monthly offer lives in content/offer.json and Trends articles in content/trends/ (both updated by automation).
 
 export type Branch = {
   id: string;

@@ -4,14 +4,17 @@ import { site, services, branchAddress } from "@/lib/site";
 import { hoursText, fromPrice } from "@/lib/format";
 import { organizationSchema, branchSchema } from "@/lib/schema";
 import { getGoogleReviews } from "@/lib/reviews";
-import { getOffer } from "@/lib/content";
+import { getOffer, getPosts } from "@/lib/content";
 import { Reviews } from "@/components/Reviews";
 import { JsonLd } from "@/components/JsonLd";
 import { TrackedLink } from "@/components/Analytics";
+import { Callback, Subscribe } from "@/components/LeadForms";
+import { PostCard } from "@/components/PostCard";
 
 export default async function Home() {
   const reviews = await getGoogleReviews();
   const offer = getOffer();
+  const posts = getPosts().slice(0, 3);
   const years = new Date().getFullYear() - site.since;
 
   return (
@@ -23,26 +26,28 @@ export default async function Home() {
 
       {/* Hero */}
       <section className="hero">
-        <Image src={site.heroPhoto} alt="Inside a bright, modern Unisalon styling floor" fill priority sizes="100vw" className="hero-img" />
+        <Image src={site.heroPhoto} alt="Inside a bright, modern Unisalon styling floor" fill priority sizes="100vw" quality={60} className="hero-img" />
         <div className="wrap hero-inner">
-          <p className="eyebrow">Unisex salon · Manikonda, Hyderabad</p>
-          <h1>
-            Your vibe.
-            <br />
-            <em>Your style.</em>
-          </h1>
-          <p className="hero-sub">
-            Expert cuts, colour, spa and beauty for men, women and kids — at two salons in Alkapur Township, open every day.
-          </p>
-          <div className="hero-actions">
-            <Link href="/book" className="btn btn-dark">Book an appointment</Link>
-            <Link href="/prices" className="link-arrow">See prices →</Link>
+          <div className="hero-card glass-strong">
+            <p className="eyebrow">Unisex salon · Manikonda, Hyderabad</p>
+            <h1>
+              Your vibe.
+              <br />
+              <em>Your style.</em>
+            </h1>
+            <p className="hero-sub">
+              Expert cuts, colour, spa and beauty for men, women and kids — at two salons in Alkapur Township, open every day.
+            </p>
+            <div className="hero-actions">
+              <Link href="/book" className="btn btn-dark" prefetch={false}>Book an appointment</Link>
+              <a href="#callback" className="link-arrow">Or get a call back →</a>
+            </div>
+            <ul className="hero-facts">
+              <li><span className="stars" aria-hidden="true">★★★★★</span> {reviews.count}+ Google reviews</li>
+              <li>Since {site.since}</li>
+              <li>{hoursText[0].time}, {hoursText[0].days.toLowerCase()}</li>
+            </ul>
           </div>
-          <ul className="hero-facts">
-            <li><span className="stars" aria-hidden="true">★★★★★</span> {reviews.count}+ Google reviews</li>
-            <li>Since {site.since}</li>
-            <li>{hoursText[0].time}, {hoursText[0].days.toLowerCase()}</li>
-          </ul>
         </div>
       </section>
 
@@ -52,10 +57,24 @@ export default async function Home() {
           <p>What would you like today?</p>
           <div className="chips">
             {services.map((s) => (
-              <Link key={s.slug} href={`/book?service=${s.slug}`} className="chip">
+              <Link key={s.slug} href={`/book?service=${s.slug}`} className="chip" prefetch={false}>
                 {s.name}
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Call-back lead box */}
+      <section id="callback" className="section-tight callback-sec">
+        <div className="wrap">
+          <div className="callback glass">
+            <div>
+              <p className="eyebrow">Short on time?</p>
+              <h2>We&apos;ll call you back</h2>
+              <p className="muted small">Leave your number — we&apos;ll help you pick a service and a time that suits you.</p>
+            </div>
+            <Callback />
           </div>
         </div>
       </section>
@@ -66,7 +85,7 @@ export default async function Home() {
             <p>
               <span className="eyebrow">This month</span> {offer.title}. <span className="muted">{offer.text}</span>
             </p>
-            <Link href="/book" className="link-arrow">{offer.cta} →</Link>
+            <Link href="/book" className="link-arrow" prefetch={false}>{offer.cta} →</Link>
           </div>
         </section>
       )}
@@ -85,13 +104,13 @@ export default async function Home() {
             {services.map((s) => (
               <Link key={s.slug} href={`/services/${s.slug}`} className="svc">
                 <div className="svc-img">
-                  <Image src={s.photo} alt={s.name} fill sizes="(max-width: 760px) 80vw, 25vw" />
+                  <Image src={s.photo} alt={s.name} fill sizes="(max-width: 760px) 50vw, 25vw" quality={60} />
                 </div>
                 <h3>{s.name}</h3>
                 <p>From {fromPrice(s)}</p>
               </Link>
             ))}
-            <Link href="/book" className="svc svc-cta">
+            <Link href="/book" className="svc svc-cta glass" prefetch={false}>
               <span className="eyebrow">Ready?</span>
               <h3>Book in under a minute</h3>
               <p>Pick a service, branch and time — we confirm on WhatsApp.</p>
@@ -101,11 +120,32 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Latest trends */}
+      {posts.length > 0 && (
+        <section className="section trends-sec">
+          <div className="wrap">
+            <div className="head-row">
+              <div>
+                <p className="eyebrow">Beauty trends</p>
+                <h2>What&apos;s new this season</h2>
+              </div>
+              <Link href="/trends" className="link-arrow">All trends →</Link>
+            </div>
+            <div className="post-grid">
+              {posts.map((p) => (
+                <PostCard post={p} key={p.slug} />
+              ))}
+            </div>
+            <Subscribe />
+          </div>
+        </section>
+      )}
+
       {/* Story teaser */}
       <section className="section split">
         <div className="wrap split-grid">
           <div className="split-img">
-            <Image src={site.gallery[0]} alt="Styling stations at the salon" fill sizes="(max-width: 900px) 100vw, 50vw" />
+            <Image src={site.gallery[0]} alt="Styling stations at the salon" fill sizes="(max-width: 900px) 100vw, 50vw" quality={60} />
           </div>
           <div>
             <p className="eyebrow">Since {site.since}</p>
@@ -121,15 +161,6 @@ export default async function Home() {
 
       <Reviews />
 
-      {/* Gallery */}
-      <section className="gallery" aria-label="Gallery">
-        {site.gallery.slice(1).map((g, i) => (
-          <div className="g-item" key={g}>
-            <Image src={g} alt={`Unisalon gallery photo ${i + 1}`} fill sizes="(max-width: 760px) 100vw, 33vw" />
-          </div>
-        ))}
-      </section>
-
       {/* Visit */}
       <section id="visit" className="section">
         <div className="wrap">
@@ -142,14 +173,14 @@ export default async function Home() {
           </div>
           <div className="branch-grid">
             {site.branches.map((b) => (
-              <article className="branch" key={b.id}>
+              <article className="branch glass" key={b.id}>
                 <h3>{b.name.replace(" Branch", "")}</h3>
                 <p className="muted">{branchAddress(b)}</p>
                 <p>
                   <a href={`tel:${b.phone}`}>{b.phoneDisplay}</a>
                 </p>
                 <div className="branch-actions">
-                  <Link href="/book" className="btn btn-dark btn-sm">Book here</Link>
+                  <Link href="/book" className="btn btn-dark btn-sm" prefetch={false}>Book here</Link>
                   <TrackedLink event="click_directions" className="link-arrow" href={b.mapsUrl} target="_blank" rel="noopener noreferrer">
                     Directions →
                   </TrackedLink>
@@ -165,7 +196,7 @@ export default async function Home() {
           <h2>Ready for your next look?</h2>
           <p className="muted">Book online in under a minute, or message us on WhatsApp.</p>
           <div className="hero-actions center-row">
-            <Link href="/book" className="btn btn-dark">Book an appointment</Link>
+            <Link href="/book" className="btn btn-dark" prefetch={false}>Book an appointment</Link>
             <TrackedLink
               event="click_whatsapp"
               className="btn btn-line"

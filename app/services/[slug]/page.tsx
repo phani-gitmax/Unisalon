@@ -60,7 +60,7 @@ export default async function ServicePage({ params }: Props) {
             <h1>{s.seoTitle}</h1>
             <p className="lead">{s.intro}</p>
             <div className="hero-actions">
-              <Link href={`/book?service=${s.slug}`} className="btn btn-dark">Book {s.name.toLowerCase()}</Link>
+              <Link href={`/book?service=${s.slug}`} className="btn btn-dark" prefetch={false}>Book {s.name.toLowerCase()}</Link>
               <a href="#prices" className="link-arrow">See prices ↓</a>
             </div>
           </div>
@@ -81,7 +81,7 @@ export default async function ServicePage({ params }: Props) {
                     <span>{i.name}</span>
                     <span className="dots" />
                     <span className="price">{i.price}</span>
-                    <Link href={`/book?service=${encodeURIComponent(i.name)}`} className="price-book" aria-label={`Book ${i.name}`}>Book</Link>
+                    <Link href={`/book?service=${encodeURIComponent(i.name)}`} className="price-book" prefetch={false} aria-label={`Book ${i.name}`}>Book</Link>
                   </li>
                 ))}
               </ul>
@@ -101,9 +101,9 @@ export default async function ServicePage({ params }: Props) {
 
           {related.length > 0 && (
             <div className="related">
-              <p className="eyebrow">From the journal</p>
+              <p className="eyebrow">Trends &amp; tips</p>
               {related.map((p) => (
-                <Link key={p.slug} href={`/blog/${p.slug}`} className="link-arrow block">{p.title} →</Link>
+                <Link key={p.slug} href={`/trends/${p.slug}`} className="link-arrow block">{p.title} →</Link>
               ))}
             </div>
           )}

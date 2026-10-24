@@ -4,12 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/site";
+import { ThemeToggle } from "./ThemeToggle";
 
 const links = [
   { href: "/#services", label: "Services" },
   { href: "/prices", label: "Prices" },
   { href: "/about", label: "About" },
-  { href: "/blog", label: "Journal" },
+  { href: "/trends", label: "Trends" },
   { href: "/#visit", label: "Visit" },
 ];
 
@@ -20,7 +21,8 @@ export function Header() {
     <header className="site-header">
       <div className="wrap nav">
         <Link href="/" className="logo" aria-label={`${site.brand} home`}>
-          <Image src="/logo-dark.webp" alt={site.brand} width={130} height={43} priority />
+          <Image src="/logo-dark.webp" alt={site.brand} width={130} height={43} priority className="logo-on-light" />
+          <Image src="/logo.webp" alt="" width={130} height={43} className="logo-on-dark" />
         </Link>
         <nav aria-label="Main">
           <ul className={open ? "open" : undefined}>
@@ -34,7 +36,8 @@ export function Header() {
           </ul>
         </nav>
         <div className="nav-right">
-          <Link href="/book" className="btn btn-dark btn-sm">Book now</Link>
+          <ThemeToggle />
+          <Link href="/book" className="btn btn-dark btn-sm" prefetch={false}>Book now</Link>
           <button
             className="menu-toggle"
             aria-label={open ? "Close menu" : "Open menu"}

@@ -1,4 +1,4 @@
-// Reads the monthly offer and blog posts from /content. These files are written by the
+// Reads the monthly offer and Trends articles from /content. These files are written by the
 // monthly automation (see AUTOMATION.md), so the site updates without touching code.
 
 import fs from "node:fs";
@@ -18,8 +18,20 @@ export function getOffer(): Offer | null {
   }
 }
 
+// Trends categories — every article's `category:` front matter must be one of these keys.
+export const categories = {
+  "hair-trends": "Hair trends",
+  "hair-care": "Hair care",
+  "skin-care": "Skin care",
+  bridal: "Bridal",
+  "mens-grooming": "Men's grooming",
+  "industry-news": "Industry news",
+} as const;
+export type Category = keyof typeof categories;
+
 export type Post = {
   slug: string;
+  category: Category;
   title: string;
   description: string;
   date: string;
@@ -42,7 +54,7 @@ function parse(file: string): { meta: Record<string, string>; body: string } {
 }
 
 export function getPosts(): Post[] {
-  const dir = path.join(root, "blog");
+  const dir = path.join(root, "trends");
   if (!fs.existsSync(dir)) return [];
   return fs
     .readdirSync(dir)
@@ -52,6 +64,7 @@ export function getPosts(): Post[] {
       return {
         slug: f.replace(/\.md$/, ""),
         title: meta.title ?? f,
+        category: (meta.category in categories ? meta.category : "hair-care") as Category,
         description: meta.description ?? "",
         date: meta.date ?? "",
         keywords: (meta.keywords ?? "").split(",").map((k) => k.trim()).filter(Boolean),

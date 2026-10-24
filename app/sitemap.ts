@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { site, services } from "@/lib/site";
-import { getPosts } from "@/lib/content";
+import { getPosts, categories } from "@/lib/content";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -11,7 +11,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/book`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${site.url}/prices`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${site.url}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${site.url}/blog`, lastModified: posts[0] ? new Date(posts[0].date) : now, changeFrequency: "weekly", priority: 0.6 },
-    ...posts.map((p) => ({ url: `${site.url}/blog/${p.slug}`, lastModified: new Date(p.date), changeFrequency: "yearly" as const, priority: 0.5 })),
+    { url: `${site.url}/trends`, lastModified: posts[0] ? new Date(posts[0].date) : now, changeFrequency: "weekly", priority: 0.7 },
+    ...Object.keys(categories)
+      .filter((c) => posts.some((p) => p.category === c))
+      .map((c) => ({ url: `${site.url}/trends/topic/${c}`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.5 })),
+    ...posts.map((p) => ({ url: `${site.url}/trends/${p.slug}`, lastModified: new Date(p.date), changeFrequency: "yearly" as const, priority: 0.6 })),
   ];
 }

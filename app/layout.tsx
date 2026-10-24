@@ -7,8 +7,12 @@ import { MobileBar } from "@/components/MobileBar";
 import { Analytics } from "@/components/Analytics";
 import "./globals.css";
 
-const display = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400", "500"], variable: "--font-display" });
-const body = Jost({ subsets: ["latin"], weight: ["300", "400", "500"], variable: "--font-body" });
+// Two font files only: one light serif weight for headings and the variable Jost for text.
+const display = Cormorant_Garamond({ subsets: ["latin"], weight: "300", variable: "--font-display" });
+const body = Jost({ subsets: ["latin"], variable: "--font-body" });
+
+// Applies a saved light/dark choice before the first paint (no flash of the wrong theme).
+const themeScript = `try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -41,11 +45,19 @@ export const metadata: Metadata = {
   verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION },
 };
 
-export const viewport: Viewport = { themeColor: "#ffffff" };
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#faf7f2" },
+    { media: "(prefers-color-scheme: dark)", color: "#141216" },
+  ],
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-IN" className={`${display.variable} ${body.variable}`}>
+    <html lang="en-IN" className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <Header />
         {children}

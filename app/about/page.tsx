@@ -95,7 +95,7 @@ export default function AboutPage() {
             ))}
           </div>
           <p className="center-row" style={{ marginTop: 40 }}>
-            <Link href="/book" className="btn btn-dark">Book an appointment</Link>
+            <Link href="/book" className="btn btn-dark" prefetch={false}>Book an appointment</Link>
           </p>
         </div>
       </section>

@@ -55,7 +55,8 @@ async function checkPage(url) {
   }
 
   for (const img of html.match(/<img[^>]*>/gi) ?? []) {
-    if (!/\salt="[^"]+"/i.test(img)) warnings.push(`\`${path}\` has an image without alt text: ${attr(img, "src")}`);
+    // alt="" is allowed: it marks a decorative image (e.g. the second, dark-mode logo).
+    if (!/\salt="/i.test(img)) warnings.push(`\`${path}\` has an image without alt text: ${attr(img, "src")}`);
   }
 
   const hrefs = [...html.matchAll(/<a[^>]+href="([^"]+)"/gi)].map((m) => m[1]);

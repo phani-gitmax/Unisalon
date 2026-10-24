@@ -30,7 +30,7 @@ export default function PricesPage() {
                 <h2>
                   <Link href={`/services/${s.slug}`}>{s.name}</Link>
                 </h2>
-                <Link href={`/book?service=${s.slug}`} className="link-arrow">Book →</Link>
+                <Link href={`/book?service=${s.slug}`} className="link-arrow" prefetch={false}>Book →</Link>
               </div>
               {s.groups.map((g) => (
                 <div key={g.title}>
