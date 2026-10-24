@@ -59,9 +59,10 @@ export const site = {
       phoneDisplay: "76708 26262",
       phone: "+917670826262",
       whatsapp: "917670826262", // TODO: confirm this number is on WhatsApp
-      lat: 17.394, // TODO: approximate — replace with the pin from this branch's Google Maps share link
-      lng: 78.3775, // TODO: approximate
-      mapsUrl: "https://www.google.com/maps/search/?api=1&query=Unisalon+Challas+Myspace+Alkapur+Township", // TODO: share link
+      // Pin from the branch's Google Maps link (mapsUrl below).
+      lat: 17.3935067,
+      lng: 78.3683203,
+      mapsUrl: "https://maps.app.goo.gl/e3EGs4J9U4u3bUKg9",
       placeId: "", // TODO
     },
   ] as Branch[],
