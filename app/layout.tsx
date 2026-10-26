@@ -4,7 +4,6 @@ import { site } from "@/lib/site";
 import { SITE_TITLE, OG_BANNER } from "@/lib/seo";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { MobileBar } from "@/components/MobileBar";
 import { Analytics } from "@/components/Analytics";
 import "./globals.css";
 
@@ -64,7 +63,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         {children}
         <Footer />
-        <MobileBar />
         <Analytics />
       </body>
     </html>

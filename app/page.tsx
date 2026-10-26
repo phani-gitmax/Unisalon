@@ -13,6 +13,7 @@ import { TrackedLink } from "@/components/Analytics";
 import { Callback, Subscribe } from "@/components/LeadForms";
 import { PostCard } from "@/components/PostCard";
 import { BranchPicker } from "@/components/BranchPicker";
+import { MobileBar } from "@/components/MobileBar";
 
 export const metadata: Metadata = {
   title: { absolute: SITE_TITLE },
@@ -59,7 +60,7 @@ export default async function Home() {
       </section>
 
       {/* One-tap quick booking */}
-      <section className="quick">
+      <section id="quick" className="quick">
         <div className="wrap quick-inner">
           <p>What would you like today?</p>
           <div className="chips">
@@ -208,6 +209,9 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Phones only: fades in once the visitor reaches the block after the hero. */}
+      <MobileBar showFrom="quick" />
     </main>
   );
 }

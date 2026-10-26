@@ -27,6 +27,8 @@ Production domain `unisalon.in` still points to the old WordPress site.
   - Challas Myspace: **17.3935067, 78.3683203** — https://maps.app.goo.gl/e3EGs4J9U4u3bUKg9
 - Visitors choose the branch for Call / WhatsApp (`components/BranchPicker.tsx`), in the booking
   flow, on area pages and in the call-back form.
+- The floating glass bar (Call · WhatsApp · Book appointment, `components/MobileBar.tsx`) is on the
+  **home page only**, phones only, and fades in once the visitor scrolls to the second block (owner's choice).
 
 ### Content
 - **Photos: Indian people only** (licensed Magnific/Freepik stock, owner's Premium+ plan). Check

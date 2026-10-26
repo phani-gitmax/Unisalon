@@ -476,7 +476,9 @@ strong { font-weight: 500; }
 }
 
 @media (max-width: 760px) {
-  body { font-size: 16px; padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+  body { font-size: 16px; }
+  /* Room for the floating bar, which only the home page has. */
+  body:has(.mobile-bar) { padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
   :root { --r: 18px; }
   .section, .reviews, .final-cta { padding: 64px 0; }
   .wrap { padding: 0 16px; }
@@ -527,7 +529,11 @@ strong { font-weight: 500; }
   .mobile-bar {
     display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 4px; position: fixed; z-index: 40;
     left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); padding: 5px; border-radius: 999px;
+    /* Hidden until MobileBar adds .is-shown, then rises and fades in slowly. */
+    opacity: 0; visibility: hidden; transform: translateY(calc(100% + 16px));
+    transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1), visibility 0s linear .7s;
   }
+  .mobile-bar.is-shown { opacity: 1; visibility: visible; transform: none; transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1), visibility 0s; }
   .branch-sheet { margin: auto auto 12px; width: calc(100vw - 20px); }
   .mobile-bar > button { font: inherit; background: none; border: 0; color: inherit; cursor: pointer; }
   .mobile-bar > a, .mobile-bar > button { display: flex; align-items: center; justify-content: center; padding: 13px 0; border-radius: 999px; font-size: .7rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; }
